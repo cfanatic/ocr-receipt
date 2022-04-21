@@ -9,7 +9,7 @@ set(BINARY ${CMAKE_PROJECT_NAME})
 
 include_directories(include)
 
-find_package(Leptonica 1.83.0 REQUIRED)
+find_package(Leptonica 1.82.0 REQUIRED)
 include_directories(${Leptonica_INCLUDE_DIRS})
 
 find_package(Tesseract 5.1.0 REQUIRED)
