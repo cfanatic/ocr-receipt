@@ -13,6 +13,8 @@ namespace ocr {
     void receipt::extract()
     {
         std::cout << "extract()" << std::endl;
+        tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+        delete api;
     }
 
 } // namespace ocr

@@ -9,6 +9,9 @@ set(BINARY ${CMAKE_PROJECT_NAME})
 
 include_directories(include)
 
+find_package(Leptonica 1.83.0 REQUIRED)
+include_directories(${Leptonica_INCLUDE_DIRS})
+
 find_package(Tesseract 5.1.0 REQUIRED)
 include_directories(${Tesseract_INCLUDE_DIRS})
 
@@ -16,4 +19,4 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.cpp)
 
 add_executable(${BINARY} ${SOURCES} ${INCLUDES} main.cpp)
-target_link_libraries(${BINARY} ${Tesseract_LIBRARIES})
+target_link_libraries(${BINARY} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES})
