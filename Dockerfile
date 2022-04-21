@@ -46,5 +46,6 @@ RUN echo "alias lla='ls -la'" >> /root/.bashrc
 RUN echo "alias ..='cd ..'" >> /root/.bashrc
 RUN . /root/.bashrc
 
-WORKDIR /src/ocr
+RUN mkdir -p /src/ocr/build
+WORKDIR /src/ocr/build
 CMD [ "/bin/bash" ]
