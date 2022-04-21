@@ -1,6 +1,7 @@
 FROM ubuntu:jammy as ubuntu-base
 
 ENV LD_LIBRARY_PATH=/usr/local/lib/
+ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 
 RUN apt-get update
 RUN apt-get upgrade -y
