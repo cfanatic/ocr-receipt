@@ -11,12 +11,16 @@ namespace ocr
     {
 
     public:
-        receipt();
+        receipt(const char *path);
         ~receipt();
 
+        void init();
         void extract();
 
     private:
+        const char *m_path;
+        Pix *m_image;
+        tesseract::TessBaseAPI *m_api;
     };
 
 } // namespace ocr
