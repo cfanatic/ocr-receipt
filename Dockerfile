@@ -29,4 +29,10 @@ RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/eng.traineddata
 RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/deu.traineddata \
     -P /usr/local/share/tessdata
 
+RUN echo "alias c='clear'" >> /root/.bashrc
+RUN echo "alias ll='ls -l'" >> /root/.bashrc
+RUN echo "alias lla='ls -la'" >> /root/.bashrc
+RUN echo "alias ..='cd ..'" >> /root/.bashrc
+RUN . /root/.bashrc
+
 CMD [ "/bin/bash" ]
