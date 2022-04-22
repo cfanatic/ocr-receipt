@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include "boost/format.hpp"
 #include <leptonica/allheaders.h>
 #include <tesseract/baseapi.h>
 
@@ -17,6 +18,7 @@ namespace ocr
 
         void init();
         void extract();
+        void extract_all();
 
     private:
         std::string m_path;
