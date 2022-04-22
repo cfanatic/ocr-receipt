@@ -10,6 +10,8 @@ int main(int argc, char *argv[])
     std::string path(argv[1]);
     ocr::receipt r(path);
     r.init();
-    r.extract();
+    auto detections = r.extract();
+    for (const auto &d : detections)
+        std::cout << d;
     return 0;
 }
