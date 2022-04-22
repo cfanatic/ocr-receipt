@@ -2,6 +2,7 @@
 #define RECOGNITION_HPP
 
 #include <iostream>
+#include <boost/filesystem.hpp>
 #include <leptonica/allheaders.h>
 #include <tesseract/baseapi.h>
 
@@ -11,14 +12,14 @@ namespace ocr
     {
 
     public:
-        receipt(const char *path);
+        receipt(const std::string &path);
         ~receipt();
 
         void init();
         void extract();
 
     private:
-        const char *m_path;
+        std::string m_path;
         Pix *m_image;
         tesseract::TessBaseAPI *m_api;
     };

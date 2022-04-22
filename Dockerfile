@@ -13,6 +13,8 @@ RUN apt-get -y install \
     make \
     g++ \
     ca-certificates \
+    libboost-filesystem-dev \
+    libboost-system-dev \
     libjpeg-dev \
     libpng-dev \
     libtiff-dev \

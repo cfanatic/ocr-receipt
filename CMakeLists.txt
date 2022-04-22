@@ -9,6 +9,9 @@ set(BINARY ${CMAKE_PROJECT_NAME})
 
 include_directories(include)
 
+find_package(Boost 1.74.0 REQUIRED COMPONENTS filesystem system)
+include_directories(${Boost_INCLUDE_DIR})
+
 find_package(Leptonica 1.82.0 REQUIRED)
 include_directories(${Leptonica_INCLUDE_DIRS})
 
@@ -19,4 +22,4 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.cpp)
 
 add_executable(${BINARY} ${SOURCES} ${INCLUDES} main.cpp)
-target_link_libraries(${BINARY} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES})
+target_link_libraries(${BINARY} ${Boost_LIBRARIES} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES})

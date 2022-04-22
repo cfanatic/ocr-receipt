@@ -2,9 +2,12 @@
 
 namespace ocr {
 
-    receipt::receipt(const char *path) : m_path(path)
+    receipt::receipt(const std::string &path)
     {
-        m_image = pixRead(m_path);
+        boost::filesystem::path path_rel(path);
+        std::string path_abs(boost::filesystem::canonical(path_rel).string());
+        m_path = path_abs;
+        m_image = pixRead(path_abs.c_str());
         m_api = new tesseract::TessBaseAPI();
     }
 
