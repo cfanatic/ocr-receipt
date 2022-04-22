@@ -12,6 +12,8 @@ namespace ocr
 {
     class receipt
     {
+
+    public:
         struct detection
         {
             int id;
@@ -23,18 +25,17 @@ namespace ocr
             std::string text;
         };
 
-        friend std::ostream &operator<<(std::ostream &os, const detection &d)
-        {
-            return os << boost::format("Box[%d]: x=%d, y=%d, w=%d, h=%d, conf: %d, text: %s") % d.id % d.x % d.y % d.w % d.h % d.conf % d.text;
-        }
-
-    public:
         receipt(const std::string &path);
         ~receipt();
 
         void init();
         std::vector<detection> extract();
         detection extract_all();
+
+        friend std::ostream &operator<<(std::ostream &os, const detection &d)
+        {
+            return os << boost::format("Box[%d]: x=%d, y=%d, w=%d, h=%d, conf: %d, text: %s") % d.id % d.x % d.y % d.w % d.h % d.conf % d.text;
+        }
 
     private:
         std::string m_path;

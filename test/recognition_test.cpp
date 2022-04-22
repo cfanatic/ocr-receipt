@@ -1,0 +1,34 @@
+#include <algorithm>
+#include <gtest/gtest.h>
+#include "recognition.hpp"
+
+class receipt_test : public ::testing::Test
+{
+public:
+    receipt_test(){};
+    virtual ~receipt_test(){};
+
+    virtual void SetUp();
+    virtual void TearDown();
+
+    ocr::receipt *m_pt;
+};
+
+void receipt_test::SetUp()
+{
+    m_pt = new ocr::receipt("../misc/input/receipt_4.jpg");
+}
+
+void receipt_test::TearDown()
+{
+    delete m_pt;
+}
+
+TEST_F(receipt_test, extract)
+{
+    m_pt->init();
+    auto detections = m_pt->extract();
+    auto &text = detections[1].text;
+    text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
+    EXPECT_EQ(text, "814373 Konfitüre Extra 1,29 A");
+}
