@@ -6,7 +6,8 @@
 #include <regex>
 #include <vector>
 #include <boost/filesystem.hpp>
-#include "boost/format.hpp"
+#include <boost/format.hpp>
+#include <boost/locale.hpp>
 #include <leptonica/allheaders.h>
 #include <opencv2/opencv.hpp>
 #include <tesseract/baseapi.h>
@@ -38,7 +39,7 @@ namespace ocr
         struct article
         {
             std::string name;
-            std::string price;
+            float price;
         };
 
         receipt(const std::string &path);

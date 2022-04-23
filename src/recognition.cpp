@@ -41,6 +41,9 @@ namespace ocr {
         {
             std::cout << boost::format("orient_deg=%d, orient_conf=%.2f") % orient_deg % orient_conf << std::endl;
         }
+        boost::locale::generator g;
+        std::locale l = g("de_DE.UTF-8");
+        std::locale::global(l);
     }
 
     std::vector<receipt::detection> receipt::extract(receipt::iterator level)
@@ -94,10 +97,25 @@ namespace ocr {
     std::vector<receipt::article> receipt::process(std::vector<receipt::detection> detections)
     {
         std::vector<receipt::article> articles;
+        auto convert_name = [&](std::string n)
+        {
+            std::string name;
+            name = boost::locale::to_title(n);
+            return name;
+        };
+        auto convert_price = [&](std::string p)
+        {
+            float price;
+            p = std::regex_replace(p, std::regex(", "), ".");
+            p = std::regex_replace(p, std::regex(" ,"), ".");
+            p = std::regex_replace(p, std::regex(","), ".");
+            price = std::stof(p);
+            return price;
+        };
         for (const auto &d : detections)
         {
-            std::regex ex_name("([a-zA-Z]+)");                       // matches the first word
-            std::regex ex_price("[0-9]{1,3}[,.](\\s?)([0-9]{1,2})"); // matches either '0,00' or '0, 00'
+            std::regex ex_name("([a-zA-Z]+)");                             // matches the first word
+            std::regex ex_price("[0-9]{1,3}(\\s?)[,.](\\s?)([0-9]{1,2})"); // matches the price
             std::smatch match;
             if (std::regex_search(d.text.begin(), d.text.end(), match, ex_price))
             {
@@ -107,7 +125,7 @@ namespace ocr {
                     std::size_t begin = d.text.find(match[0]);
                     std::size_t end = d.text.find(price);
                     std::string name = d.text.substr(begin, end - begin - 1);
-                    receipt::article article = {name, price};
+                    receipt::article article = {convert_name(name), convert_price(price)};
                     articles.push_back(article);
                 }
             }

@@ -12,7 +12,7 @@ set(EXTRA_COMPILE_FLAGS "-Wall -Werror")
 set(BINARY ${CMAKE_PROJECT_NAME})
 set(TEST ${CMAKE_PROJECT_NAME}-test)
 
-find_package(Boost 1.74.0 REQUIRED COMPONENTS filesystem system)
+find_package(Boost 1.74.0 REQUIRED COMPONENTS filesystem locale system)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(Leptonica 1.82.0 REQUIRED)

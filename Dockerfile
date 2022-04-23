@@ -15,6 +15,7 @@ RUN apt-get -y install \
     g++ \
     ca-certificates \
     libboost-filesystem-dev \
+    libboost-locale-dev \
     libboost-system-dev \
     libopencv-dev \
     libjpeg-dev \
