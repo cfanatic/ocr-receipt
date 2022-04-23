@@ -1,3 +1,4 @@
+.vscode/
 build/
 include/tesseract/
 misc/input/IMG_*.jpg
