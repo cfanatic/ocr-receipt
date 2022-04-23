@@ -59,7 +59,8 @@ namespace ocr {
         }
         case receipt::iterator::line:
         {
-            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 20, nullptr, nullptr, nullptr);
+            // padding for edeka->6, rewe->20 and aldi->20
+            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 6, nullptr, nullptr, nullptr);
             for (int i = 0; i < boxes->n; i++)
             {
                 auto box = boxaGetBox(boxes, i, L_CLONE);
@@ -97,6 +98,20 @@ namespace ocr {
     std::vector<receipt::article> receipt::process(std::vector<receipt::detection> detections)
     {
         std::vector<receipt::article> articles;
+        auto filter_article = [&](std::string n)
+        {
+            bool drop;
+            std::vector<std::string> blacklist = {"summe", "pfand", "leergut", "einweg"};
+            drop = drop | std::any_of(blacklist.begin(), blacklist.end(),
+                                      [&](const auto &w)
+                                      {
+                                          std::string name;
+                                          name = boost::locale::to_lower(n);
+                                          return name.find(w) != std::string::npos;
+                                      });
+            drop = drop | n.length() < 3;
+            return drop;
+        };
         auto convert_name = [&](std::string n)
         {
             std::string name;
@@ -126,6 +141,11 @@ namespace ocr {
                     std::size_t begin = d.text.find(match[0]);
                     std::size_t end = d.text.find(price);
                     name = d.text.substr(begin, end - begin - 1);
+                }
+                if (filter_article(name))
+                {
+                    std::cout << "Drop: " << d.text << std::endl;
+                    continue;
                 }
                 receipt::article article = {convert_name(name), convert_price(price)};
                 articles.push_back(article);
