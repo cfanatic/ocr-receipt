@@ -17,6 +17,13 @@ namespace ocr
     {
 
     public:
+        enum class iterator
+        {
+            block,
+            line,
+            word
+        };
+
         struct detection
         {
             int id;
@@ -33,9 +40,8 @@ namespace ocr
 
         void init();
         void preprocess();
+        std::vector<detection> extract(iterator level = iterator::line);
         void overlay(std::vector<receipt::detection> detections);
-        std::vector<detection> extract();
-        detection extract_all();
 
         friend std::ostream &operator<<(std::ostream &os, const detection &d)
         {

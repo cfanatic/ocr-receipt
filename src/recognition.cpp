@@ -46,6 +46,43 @@ namespace ocr {
         }
     }
 
+    std::vector<receipt::detection> receipt::extract(receipt::iterator level)
+    {
+        std::vector<receipt::detection> detections;
+        switch (level)
+        {
+        case receipt::iterator::block:
+        {
+            receipt::detection detection = {0, 0, 0, 0, 0, m_api->MeanTextConf(), m_api->GetUTF8Text()};
+            detections.push_back(detection);
+            break;
+        }
+        case receipt::iterator::line:
+        {
+            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 20, nullptr, nullptr, nullptr);
+            for (int i = 0; i < boxes->n; i++)
+            {
+                auto box = boxaGetBox(boxes, i, L_CLONE);
+                int x = box->x, y = box->y, w = box->w, h = box->h;
+                m_api->SetRectangle(x, y, w, h);
+                int conf = m_api->MeanTextConf();
+                if (conf > 30)
+                {
+                    std::string text = m_api->GetUTF8Text();
+                    text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
+                    receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
+                    detections.push_back(detection);
+                }
+                boxDestroy(&box);
+            }
+            break;
+        }
+        case receipt::iterator::word:
+            break;
+        }
+        return detections;
+    }
+
     void receipt::overlay(std::vector<receipt::detection> detections)
     {
         for (const auto &d : detections)
@@ -55,34 +92,6 @@ namespace ocr {
         }
         std::string path_out = std::regex_replace(m_path, std::regex(".jpg"), "_overlay.jpg");
         cv::imwrite(path_out, m_img_cv);
-    }
-
-    std::vector<receipt::detection> receipt::extract()
-    {
-        std::vector<receipt::detection> detections;
-        Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 20, nullptr, nullptr, nullptr);
-        for (int i = 0; i < boxes->n; i++)
-        {
-            auto box = boxaGetBox(boxes, i, L_CLONE);
-            int x = box->x, y = box->y, w = box->w, h = box->h;
-            m_api->SetRectangle(x, y, w, h);
-            int conf = m_api->MeanTextConf();
-            if (conf > 30)
-            {
-                std::string text = m_api->GetUTF8Text();
-                text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
-                receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
-                detections.push_back(detection);
-            }
-            boxDestroy(&box);
-        }
-        return detections;
-    }
-
-    receipt::detection receipt::extract_all()
-    {
-        receipt::detection detection = {0, 0, 0, 0, 0, m_api->MeanTextConf(), m_api->GetUTF8Text()};
-        return detection;
     }
 
 } // namespace ocr
