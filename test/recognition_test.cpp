@@ -15,7 +15,7 @@ public:
 
 void receipt_test::SetUp()
 {
-    m_pt = new ocr::receipt("../misc/input/receipt_4.jpg");
+    m_pt = new ocr::receipt("../misc/input/receipt_2.jpg");
 }
 
 void receipt_test::TearDown()
@@ -28,5 +28,5 @@ TEST_F(receipt_test, extract)
     m_pt->init();
     auto detections = m_pt->extract();
     auto &text = detections[1].text;
-    EXPECT_EQ(text, "814373 Konfitüre Extra 1,29 A");
+    EXPECT_EQ(text, "MILCHREIS KIRSCH 0,29 B");
 }
