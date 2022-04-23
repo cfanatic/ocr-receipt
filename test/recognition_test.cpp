@@ -37,13 +37,18 @@ void receipt_test::TearDownTestSuite()
 TEST_F(receipt_test, extract_1)
 {
     auto detections = m_r1->extract();
-    auto &text = detections[3].text;
-    EXPECT_EQ(text, "Geg. EC-Cash EUR 0, 58");
+    EXPECT_EQ(detections[0].text, "EUR");
+    EXPECT_EQ(detections[1].text, "MILCHREIS SCHOKO 0,29 B");
+    EXPECT_EQ(detections[2].text, "MILCHREIS KIRSCH 0,29 B");
+    EXPECT_EQ(detections[3].text, "Geg. EC-Cash EUR 0, 58");
 }
 
 TEST_F(receipt_test, extract_2)
 {
     auto detections = m_r2->extract();
-    auto &text = detections[1].text;
-    EXPECT_EQ(text, "MILCHREIS KIRSCH 0,29 B");
+    EXPECT_EQ(detections[0].text, "EUR");
+    EXPECT_EQ(detections[1].text, "814373 Konfitüre Extra 1,29 A");
+    EXPECT_EQ(detections[2].text, "44718 Feine Kleinkuchen 1,79 A");
+    EXPECT_EQ(detections[3].text, "60819 Erdbeeren 5009 0,99 A");
+    EXPECT_EQ(detections[4].text, "814989 Spargel grün 4009 2,99 A");
 }
