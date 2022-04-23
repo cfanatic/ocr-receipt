@@ -29,6 +29,7 @@ namespace ocr
         ~receipt();
 
         void init();
+        void preprocess();
         std::vector<detection> extract();
         detection extract_all();
 

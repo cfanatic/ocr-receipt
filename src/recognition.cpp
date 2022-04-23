@@ -31,6 +31,22 @@ namespace ocr {
         }
     }
 
+    void receipt::preprocess()
+    {
+        int orient_deg;
+        float orient_conf;
+        const char *script_name;
+        float script_conf;
+        if (!m_api->DetectOrientationScript(&orient_deg, &orient_conf, &script_name, &script_conf))
+        {
+            std::cerr << "Error: Could not detect the orientation of the input image" << std::endl;
+        }
+        else
+        {
+            std::cout << boost::format("orient_deg[%d]: orient_conf=%.2f, script_name=%s, script_conf=%.2f") % orient_deg % orient_conf % script_name % script_conf << std::endl;
+        }
+    }
+
     std::vector<receipt::detection> receipt::extract()
     {
         std::vector<receipt::detection> detections;

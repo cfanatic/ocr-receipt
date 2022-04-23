@@ -1,6 +1,6 @@
-############################################
-#######            Config            #######
-############################################
+##########################################################################
+#                             Configuration                              #
+##########################################################################
 
 cmake_minimum_required(VERSION 3.0.0)
 project(ocr-receipt VERSION 1.0.0)
@@ -21,9 +21,9 @@ include_directories(${Leptonica_INCLUDE_DIRS})
 find_package(Tesseract 5.1.0 REQUIRED)
 include_directories(${Tesseract_INCLUDE_DIRS})
 
-############################################
-#######            Binary            #######
-############################################
+##########################################################################
+#                                 Binary                                 #
+##########################################################################
 
 include_directories(include)
 
@@ -33,9 +33,9 @@ file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.cpp)
 add_executable(${BINARY} ${SOURCES} ${INCLUDES} main.cpp)
 target_link_libraries(${BINARY} ${Boost_LIBRARIES} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES})
 
-############################################
-#######          Unit Tests          #######
-############################################
+##########################################################################
+#                               Unit Tests                               #
+##########################################################################
 
 enable_testing()
 
