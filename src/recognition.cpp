@@ -52,12 +52,16 @@ namespace ocr {
         for (int i = 0; i < boxes->n; i++)
         {
             auto box = boxaGetBox(boxes, i, L_CLONE);
-            auto &x = box->x, y = box->y, w = box->w, h = box->h;
+            int x = box->x, y = box->y, w = box->w, h = box->h;
             m_api->SetRectangle(x, y, w, h);
-            receipt::detection detection = {i, x, y, w, h, m_api->MeanTextConf(), m_api->GetUTF8Text()};
-            std::string &text = detection.text;
-            text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
-            detections.push_back(detection);
+            int conf = m_api->MeanTextConf();
+            std::string text = m_api->GetUTF8Text();
+            if (conf > 30)
+            {
+                text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
+                receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
+                detections.push_back(detection);
+            }
             boxDestroy(&box);
         }
         return detections;

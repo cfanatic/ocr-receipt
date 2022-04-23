@@ -7,26 +7,43 @@ public:
     receipt_test(){};
     virtual ~receipt_test(){};
 
-    virtual void SetUp();
-    virtual void TearDown();
+    static void SetUpTestSuite();
+    static void TearDownTestSuite();
 
-    ocr::receipt *m_pt;
+    virtual void SetUp(void){};
+    virtual void TearDown(void){};
+
+    static ocr::receipt *m_r1;
+    static ocr::receipt *m_r2;
 };
 
-void receipt_test::SetUp()
+ocr::receipt *receipt_test::m_r1 = nullptr;
+ocr::receipt *receipt_test::m_r2 = nullptr;
+
+void receipt_test::SetUpTestSuite()
 {
-    m_pt = new ocr::receipt("../misc/input/receipt_2.jpg");
+    m_r1 = new ocr::receipt("../misc/input/receipt_1.jpg");
+    m_r2 = new ocr::receipt("../misc/input/receipt_2.jpg");
 }
 
-void receipt_test::TearDown()
+void receipt_test::TearDownTestSuite()
 {
-    delete m_pt;
+    delete m_r1;
+    delete m_r2;
 }
 
-TEST_F(receipt_test, extract)
+TEST_F(receipt_test, extract_1)
 {
-    m_pt->init();
-    auto detections = m_pt->extract();
+    m_r1->init();
+    auto detections = m_r1->extract();
+    auto &text = detections[3].text;
+    EXPECT_EQ(text, "Geg. EC-Cash EUR 0, 58");
+}
+
+TEST_F(receipt_test, extract_2)
+{
+    m_r2->init();
+    auto detections = m_r2->extract();
     auto &text = detections[1].text;
     EXPECT_EQ(text, "MILCHREIS KIRSCH 0,29 B");
 }
