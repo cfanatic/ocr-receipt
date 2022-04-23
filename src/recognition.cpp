@@ -114,20 +114,21 @@ namespace ocr {
         };
         for (const auto &d : detections)
         {
+            std::string name, price;
             std::regex ex_name("([a-zA-Z]+)");                             // matches the first word
             std::regex ex_price("[0-9]{1,3}(\\s?)[,.](\\s?)([0-9]{1,2})"); // matches the price
             std::smatch match;
             if (std::regex_search(d.text.begin(), d.text.end(), match, ex_price))
             {
-                std::string price = match[0];
+                price = match[0];
                 if (std::regex_search(d.text.begin(), d.text.end(), match, ex_name))
                 {
                     std::size_t begin = d.text.find(match[0]);
                     std::size_t end = d.text.find(price);
-                    std::string name = d.text.substr(begin, end - begin - 1);
-                    receipt::article article = {convert_name(name), convert_price(price)};
-                    articles.push_back(article);
+                    name = d.text.substr(begin, end - begin - 1);
                 }
+                receipt::article article = {convert_name(name), convert_price(price)};
+                articles.push_back(article);
             }
         }
         return articles;
