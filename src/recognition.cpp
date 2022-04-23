@@ -14,6 +14,7 @@ namespace ocr {
     {
         m_api->End();
         pixDestroy(&m_img_pix);
+        m_img_cv.release();
         delete m_api;
     }
 
@@ -88,6 +89,30 @@ namespace ocr {
         }
         std::string path_out = std::regex_replace(m_path, std::regex(".jpg"), "_overlay.jpg");
         cv::imwrite(path_out, m_img_cv);
+    }
+
+    std::vector<receipt::article> receipt::process(std::vector<receipt::detection> detections)
+    {
+        std::vector<receipt::article> articles;
+        for (const auto &d : detections)
+        {
+            std::regex ex_name("([a-zA-Z]+)");                       // matches the first word
+            std::regex ex_price("[0-9]{1,3}[,.](\\s?)([0-9]{1,2})"); // matches either '0,00' or '0, 00'
+            std::smatch match;
+            if (std::regex_search(d.text.begin(), d.text.end(), match, ex_price))
+            {
+                std::string price = match[0];
+                if (std::regex_search(d.text.begin(), d.text.end(), match, ex_name))
+                {
+                    std::size_t begin = d.text.find(match[0]);
+                    std::size_t end = d.text.find(price);
+                    std::string name = d.text.substr(begin, end - begin - 1);
+                    receipt::article article = {name, price};
+                    articles.push_back(article);
+                }
+            }
+        }
+        return articles;
     }
 
 } // namespace ocr
