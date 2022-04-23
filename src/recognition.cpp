@@ -57,6 +57,8 @@ namespace ocr {
             auto &x = box->x, y = box->y, w = box->w, h = box->h;
             m_api->SetRectangle(x, y, w, h);
             receipt::detection detection = {i, x, y, w, h, m_api->MeanTextConf(), m_api->GetUTF8Text()};
+            std::string &text = detection.text;
+            text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
             detections.push_back(detection);
             boxDestroy(&box);
         }

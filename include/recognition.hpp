@@ -1,6 +1,7 @@
 #ifndef RECOGNITION_HPP
 #define RECOGNITION_HPP
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <boost/filesystem.hpp>
@@ -35,7 +36,7 @@ namespace ocr
 
         friend std::ostream &operator<<(std::ostream &os, const detection &d)
         {
-            return os << boost::format("Box[%d]: x=%d, y=%d, w=%d, h=%d, conf: %d, text: %s") % d.id % d.x % d.y % d.w % d.h % d.conf % d.text;
+            return os << boost::format("Box[%d]: x=%d, y=%d, w=%d, h=%d, conf: %d, text: %s") % d.id % d.x % d.y % d.w % d.h % d.conf % d.text << std::endl;
         }
 
     private:
