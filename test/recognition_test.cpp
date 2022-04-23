@@ -24,6 +24,8 @@ void receipt_test::SetUpTestSuite()
 {
     m_r1 = new ocr::receipt("../misc/input/receipt_1.jpg");
     m_r2 = new ocr::receipt("../misc/input/receipt_2.jpg");
+    m_r1->init();
+    m_r2->init();
 }
 
 void receipt_test::TearDownTestSuite()
@@ -34,7 +36,6 @@ void receipt_test::TearDownTestSuite()
 
 TEST_F(receipt_test, extract_1)
 {
-    m_r1->init();
     auto detections = m_r1->extract();
     auto &text = detections[3].text;
     EXPECT_EQ(text, "Geg. EC-Cash EUR 0, 58");
@@ -42,7 +43,6 @@ TEST_F(receipt_test, extract_1)
 
 TEST_F(receipt_test, extract_2)
 {
-    m_r2->init();
     auto detections = m_r2->extract();
     auto &text = detections[1].text;
     EXPECT_EQ(text, "MILCHREIS KIRSCH 0,29 B");
