@@ -39,7 +39,6 @@ namespace ocr
         ~receipt();
 
         void init();
-        void preprocess();
         std::vector<detection> extract(iterator level = iterator::line);
         void overlay(std::vector<receipt::detection> detections);
 

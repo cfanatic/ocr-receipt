@@ -19,6 +19,8 @@ namespace ocr {
 
     void receipt::init()
     {
+        int orient_deg;
+        float orient_conf;
         if (m_api->Init(nullptr, "deu", tesseract::OEM_LSTM_ONLY))
         {
             std::cerr << "Error: Could not initialize Tesseract" << std::endl;
@@ -30,12 +32,6 @@ namespace ocr {
             m_api->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
             m_api->SetImage(m_img_pix);
         }
-    }
-
-    void receipt::preprocess()
-    {
-        int orient_deg;
-        float orient_conf;
         if (!m_api->DetectOrientationScript(&orient_deg, &orient_conf, nullptr, nullptr))
         {
             std::cerr << "Error: Could not detect the orientation of the input image" << std::endl;
