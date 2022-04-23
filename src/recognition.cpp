@@ -19,7 +19,7 @@ namespace ocr {
 
     void receipt::init()
     {
-        if (m_api->Init(NULL, "deu", tesseract::OEM_LSTM_ONLY))
+        if (m_api->Init(nullptr, "deu", tesseract::OEM_LSTM_ONLY))
         {
             std::cerr << "Error: Could not initialize Tesseract" << std::endl;
         }
@@ -48,7 +48,7 @@ namespace ocr {
     std::vector<receipt::detection> receipt::extract()
     {
         std::vector<receipt::detection> detections;
-        Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 20, NULL, NULL, NULL);
+        Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 20, nullptr, nullptr, nullptr);
         for (int i = 0; i < boxes->n; i++)
         {
             auto box = boxaGetBox(boxes, i, L_CLONE);
