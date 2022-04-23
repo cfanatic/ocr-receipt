@@ -21,6 +21,9 @@ include_directories(${Leptonica_INCLUDE_DIRS})
 find_package(Tesseract 5.1.0 REQUIRED)
 include_directories(${Tesseract_INCLUDE_DIRS})
 
+find_package(OpenCV 4.5.4 REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
 ##########################################################################
 #                                 Binary                                 #
 ##########################################################################
@@ -31,7 +34,7 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.cpp)
 
 add_executable(${BINARY} ${SOURCES} ${INCLUDES} main.cpp)
-target_link_libraries(${BINARY} ${Boost_LIBRARIES} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES})
+target_link_libraries(${BINARY} ${Boost_LIBRARIES} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES} ${OpenCV_LIBS})
 
 ##########################################################################
 #                               Unit Tests                               #
@@ -51,6 +54,6 @@ set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
 file(GLOB_RECURSE SOURCES_TEST ${TEST_DIR}/*.cpp)
 
 add_executable(${TEST} ${SOURCES} ${SOURCES_TEST} ${INCLUDES})
-target_link_libraries(${TEST} gtest_main ${Boost_LIBRARIES} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES})
+target_link_libraries(${TEST} gtest_main ${Boost_LIBRARIES} ${Tesseract_LIBRARIES} ${Leptonica_LIBRARIES} ${OpenCV_LIBS})
 
 gtest_discover_tests(${TEST})

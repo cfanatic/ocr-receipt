@@ -1,5 +1,6 @@
 FROM ubuntu:jammy as ubuntu-base
 
+ENV DEBIAN_FRONTEND=noninteractive
 ENV LD_LIBRARY_PATH=/usr/local/lib/
 ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 
@@ -15,6 +16,7 @@ RUN apt-get -y install \
     ca-certificates \
     libboost-filesystem-dev \
     libboost-system-dev \
+    libopencv-dev \
     libjpeg-dev \
     libpng-dev \
     libtiff-dev \

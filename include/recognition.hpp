@@ -3,10 +3,12 @@
 
 #include <algorithm>
 #include <iostream>
+#include <regex>
 #include <vector>
 #include <boost/filesystem.hpp>
 #include "boost/format.hpp"
 #include <leptonica/allheaders.h>
+#include <opencv2/opencv.hpp>
 #include <tesseract/baseapi.h>
 
 namespace ocr
@@ -31,6 +33,7 @@ namespace ocr
 
         void init();
         void preprocess();
+        void overlay(std::vector<receipt::detection> detections);
         std::vector<detection> extract();
         detection extract_all();
 
@@ -41,7 +44,8 @@ namespace ocr
 
     private:
         std::string m_path;
-        Pix *m_image;
+        Pix *m_img_pix;
+        cv::Mat m_img_cv;
         tesseract::TessBaseAPI *m_api;
     };
 

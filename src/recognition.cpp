@@ -13,7 +13,7 @@ namespace ocr {
     receipt::~receipt()
     {
         m_api->End();
-        pixDestroy(&m_image);
+        pixDestroy(&m_img_pix);
         delete m_api;
     }
 
@@ -25,9 +25,10 @@ namespace ocr {
         }
         else
         {
-            m_image = pixRead(m_path.c_str());
+            m_img_pix = pixRead(m_path.c_str());
+            m_img_cv = cv::imread(m_path.c_str());
             m_api->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-            m_api->SetImage(m_image);
+            m_api->SetImage(m_img_pix);
         }
     }
 
@@ -43,6 +44,17 @@ namespace ocr {
         {
             std::cout << boost::format("orient_deg=%d, orient_conf=%.2f") % orient_deg % orient_conf << std::endl;
         }
+    }
+
+    void receipt::overlay(std::vector<receipt::detection> detections)
+    {
+        for (const auto &d : detections)
+        {
+            cv::Rect rec = cv::Rect(d.x, d.y, d.w, d.h);
+            cv::rectangle(m_img_cv, rec, cv::Scalar(0, 0, 255), 2, 8, 0);
+        }
+        std::string path_out = std::regex_replace(m_path, std::regex(".jpg"), "_overlay.jpg");
+        cv::imwrite(path_out, m_img_cv);
     }
 
     std::vector<receipt::detection> receipt::extract()
