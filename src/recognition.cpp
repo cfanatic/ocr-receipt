@@ -12,9 +12,9 @@ namespace ocr {
 
     receipt::~receipt()
     {
-        m_api->End();
         pixDestroy(&m_img_pix);
         m_img_cv.release();
+        m_api->End();
         delete m_api;
     }
 
@@ -46,6 +46,32 @@ namespace ocr {
         std::locale::global(l);
     }
 
+    void receipt::preprocess()
+    {
+        std::string text = m_api->GetUTF8Text();
+        std::vector<std::string> whitelist = {"edeka", "rewe", "aldi"};
+        auto shop = std::find_if(whitelist.begin(), whitelist.end(),
+                                 [&](const auto &w)
+                                 {
+                                     text = boost::locale::to_lower(text);
+                                     return text.find(w) != std::string::npos;
+                                 });
+        std::map<std::string, receipt::shop> shops{
+            {"edeka", receipt::shop::edeka},
+            {"rewe", receipt::shop::rewe},
+            {"aldi", receipt::shop::aldi},
+        };
+        if (shop != whitelist.end())
+        {
+            m_shop = shops[*shop];
+        }
+        else
+        {
+            m_shop = receipt::shop::unknown;
+        }
+        std::cout << "Found: " << m_shop << std::endl;
+    }
+
     std::vector<receipt::detection> receipt::extract(receipt::iterator level)
     {
         std::vector<receipt::detection> detections;
@@ -59,8 +85,14 @@ namespace ocr {
         }
         case receipt::iterator::line:
         {
-            // padding for edeka->6, rewe->20 and aldi->20
-            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, 6, nullptr, nullptr, nullptr);
+            std::map<receipt::shop, int> padding{
+                {receipt::shop::edeka, 6},
+                {receipt::shop::rewe, 20},
+                {receipt::shop::aldi, 20},
+                {receipt::shop::unknown, 20},
+            };
+            std::cout << "Padding: " << padding[m_shop] << std::endl;
+            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding[m_shop], nullptr, nullptr, nullptr);
             for (int i = 0; i < boxes->n; i++)
             {
                 auto box = boxaGetBox(boxes, i, L_CLONE);
@@ -103,11 +135,11 @@ namespace ocr {
             bool drop;
             std::vector<std::string> blacklist = {"summe", "pfand", "leergut", "einweg"};
             drop = drop | std::any_of(blacklist.begin(), blacklist.end(),
-                                      [&](const auto &w)
+                                      [&](const auto &b)
                                       {
                                           std::string name;
                                           name = boost::locale::to_lower(n);
-                                          return name.find(w) != std::string::npos;
+                                          return name.find(b) != std::string::npos;
                                       });
             drop = drop | n.length() < 3;
             return drop;

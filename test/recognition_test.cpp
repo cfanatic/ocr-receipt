@@ -10,7 +10,7 @@ public:
     static void SetUpTestSuite();
     static void TearDownTestSuite();
 
-    virtual void SetUp(void){};
+    virtual void SetUp(void);
     virtual void TearDown(void){};
 
     static ocr::receipt *m_r1;
@@ -24,14 +24,20 @@ void receipt_test::SetUpTestSuite()
 {
     m_r1 = new ocr::receipt("../misc/input/receipt_1.jpg");
     m_r2 = new ocr::receipt("../misc/input/receipt_2.jpg");
-    m_r1->init();
-    m_r2->init();
 }
 
 void receipt_test::TearDownTestSuite()
 {
     delete m_r1;
     delete m_r2;
+}
+
+void receipt_test::SetUp(void)
+{
+    m_r1->init();
+    m_r1->preprocess();
+    m_r2->init();
+    m_r2->preprocess();
 }
 
 TEST_F(receipt_test, extract_1)

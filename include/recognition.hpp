@@ -18,6 +18,14 @@ namespace ocr
     {
 
     public:
+        enum class shop
+        {
+            edeka,
+            rewe,
+            aldi,
+            unknown
+        };
+
         enum class iterator
         {
             block,
@@ -46,9 +54,21 @@ namespace ocr
         ~receipt();
 
         void init();
+        void preprocess();
         std::vector<detection> extract(iterator level = iterator::line);
         void overlay(std::vector<detection> detections);
         std::vector<article> process(std::vector<detection> detections);
+
+        friend std::ostream &operator<<(std::ostream &os, const shop &s)
+        {
+            std::map<shop, std::string> shops{
+                {shop::edeka, "edeka"},
+                {shop::rewe, "rewe"},
+                {shop::aldi, "aldi"},
+                {shop::unknown, "unknown"},
+            };
+            return os << shops[s];
+        }
 
         friend std::ostream &operator<<(std::ostream &os, const detection &d)
         {
@@ -59,6 +79,8 @@ namespace ocr
         {
             return os << boost::format("Article=%s, Price=%.2f") % a.name % a.price << std::endl;
         }
+
+        shop m_shop;
 
     private:
         std::string m_path;
