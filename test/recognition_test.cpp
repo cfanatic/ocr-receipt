@@ -10,37 +10,39 @@ public:
     static void SetUpTestSuite();
     static void TearDownTestSuite();
 
-    virtual void SetUp(void);
-    virtual void TearDown(void){};
+    virtual void SetUp(){};
+    virtual void TearDown(){};
 
     static ocr::receipt *m_r1;
     static ocr::receipt *m_r2;
+    static ocr::receipt *m_r3;
 };
 
 ocr::receipt *receipt_test::m_r1 = nullptr;
 ocr::receipt *receipt_test::m_r2 = nullptr;
+ocr::receipt *receipt_test::m_r3 = nullptr;
 
 void receipt_test::SetUpTestSuite()
 {
     m_r1 = new ocr::receipt("../misc/input/receipt_1.jpg");
     m_r2 = new ocr::receipt("../misc/input/receipt_2.jpg");
+    m_r3 = new ocr::receipt("../misc/input/receipt_3.jpg");
+    m_r1->init();
+    m_r1->preprocess();
+    m_r2->init();
+    m_r2->preprocess();
+    m_r3->init();
+    m_r3->preprocess();
 }
 
 void receipt_test::TearDownTestSuite()
 {
     delete m_r1;
     delete m_r2;
+    delete m_r3;
 }
 
-void receipt_test::SetUp(void)
-{
-    m_r1->init();
-    m_r1->preprocess();
-    m_r2->init();
-    m_r2->preprocess();
-}
-
-TEST_F(receipt_test, extract_1)
+TEST_F(receipt_test, extract_receipt_1)
 {
     auto detections = m_r1->extract();
     EXPECT_EQ(detections[0].text, "EUR");
@@ -49,7 +51,7 @@ TEST_F(receipt_test, extract_1)
     EXPECT_EQ(detections[3].text, "Geg. EC-Cash EUR 0, 58");
 }
 
-TEST_F(receipt_test, extract_2)
+TEST_F(receipt_test, extract_receipt_2)
 {
     auto detections = m_r2->extract();
     EXPECT_EQ(detections[0].text, "EUR");
@@ -57,4 +59,29 @@ TEST_F(receipt_test, extract_2)
     EXPECT_EQ(detections[2].text, "44718 Feine Kleinkuchen 1,79 A");
     EXPECT_EQ(detections[3].text, "60819 Erdbeeren 5009 0,99 A");
     EXPECT_EQ(detections[4].text, "814989 Spargel grün 4009 2,99 A");
+}
+
+TEST_F(receipt_test, preprocess_receipt_3)
+{
+    m_r3->preprocess();
+    EXPECT_EQ(m_r3->get_shop(), ocr::receipt::shop::aldi);
+}
+
+TEST_F(receipt_test, process_receipt_3)
+{
+    std::vector<ocr::receipt::article> articles_gt = {
+        ocr::receipt::article{"Wrigleys Extra I.", 2.25},
+        ocr::receipt::article{"Allwetter-Kiebeb.", 3.99},
+        ocr::receipt::article{"Grieche Pur 4x1509g", 1.29},
+        ocr::receipt::article{"Heidelbeeren 3009", 2.99},
+        ocr::receipt::article{"Torffr. Blumenerde", 1.99},
+        ocr::receipt::article{"Lacchwiben", 0.69},
+        ocr::receipt::article{"Mandarinen Kg", 1.59},
+        ocr::receipt::article{"Kerryg Orig 309", 1.39},
+        ocr::receipt::article{"Kerryg Orig 5090", 1.39},
+    };
+    m_r3->preprocess();
+    auto detections = m_r3->extract();
+    auto articles = m_r3->process(detections);
+    EXPECT_EQ(articles, articles_gt);
 }
