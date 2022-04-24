@@ -16,6 +16,7 @@ RUN apt-get -y install \
     ca-certificates \
     libboost-filesystem-dev \
     libboost-locale-dev \
+    libboost-program-options-dev \
     libboost-system-dev \
     libopencv-dev \
     libjpeg-dev \
