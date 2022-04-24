@@ -41,9 +41,9 @@ namespace ocr {
         {
             std::cout << boost::format("orient_deg=%d, orient_conf=%.2f") % orient_deg % orient_conf << std::endl;
         }
-        boost::locale::generator g;
-        std::locale l = g("de_DE.UTF-8");
-        std::locale::global(l);
+        boost::locale::generator gen;
+        std::locale loc = gen("de_DE.UTF-8");
+        std::locale::global(loc);
     }
 
     void receipt::preprocess()
