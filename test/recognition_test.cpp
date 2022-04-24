@@ -4,8 +4,8 @@
 class receipt_test : public ::testing::Test
 {
 public:
-    receipt_test(){};
-    virtual ~receipt_test(){};
+    receipt_test() = default;
+    virtual ~receipt_test() = default;
 
     static void SetUpTestSuite();
     static void TearDownTestSuite();
