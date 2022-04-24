@@ -64,8 +64,15 @@ namespace ocr
         void overlay(std::vector<detection> detections);
         std::vector<article> process(std::vector<detection> detections);
 
+        void set_path(const std::string &path)
+        {
+            boost::filesystem::path path_rel(path);
+            std::string path_abs(boost::filesystem::canonical(path_rel).string());
+            m_path = std::move(path_abs);
+        }
+        std::string get_path() const { return m_path; }
+        void set_shop(const shop &shop) { m_shop = std::move(shop); }
         shop get_shop() const { return m_shop; }
-        void set_shop(shop shop) { m_shop = std::move(shop); }
 
         friend std::ostream &operator<<(std::ostream &os, const shop &s)
         {

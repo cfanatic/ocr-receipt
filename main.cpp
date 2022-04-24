@@ -1,4 +1,4 @@
-#include <boost/program_options.hpp>
+#include "configuration.hpp"
 #include "recognition.hpp"
 
 namespace po = boost::program_options;
@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
 
     const std::string &path_c = vm["config"].as<std::string>();
     const std::string &path_i = vm["image"].as<std::string>();
+
+    ocr::config.load(path_c);
 
     ocr::receipt r(path_i);
     r.init();

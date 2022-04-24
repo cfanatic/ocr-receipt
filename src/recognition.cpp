@@ -1,12 +1,11 @@
+#include "configuration.hpp"
 #include "recognition.hpp"
 
 namespace ocr {
 
     receipt::receipt(const std::string &path)
     {
-        boost::filesystem::path path_rel(path);
-        std::string path_abs(boost::filesystem::canonical(path_rel).string());
-        m_path = path_abs;
+        set_path(path);
         m_api = new tesseract::TessBaseAPI();
     }
 
