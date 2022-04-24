@@ -48,21 +48,16 @@ namespace ocr {
     void receipt::preprocess()
     {
         std::string text = m_api->GetUTF8Text();
-        std::vector<std::string> whitelist = {"edeka", "rewe", "aldi"};
-        auto shop = std::find_if(whitelist.begin(), whitelist.end(),
+        std::vector<std::string> shop_list = ocr::config.get_shops();
+        auto shop = std::find_if(shop_list.begin(), shop_list.end(),
                                  [&](const auto &w)
                                  {
                                      text = boost::locale::to_lower(text);
                                      return text.find(w) != std::string::npos;
                                  });
-        std::map<std::string, receipt::shop> shops{
-            {"edeka", receipt::shop::edeka},
-            {"rewe", receipt::shop::rewe},
-            {"aldi", receipt::shop::aldi},
-        };
-        if (shop != whitelist.end())
+        if (shop != shop_list.end())
         {
-            set_shop(shops[*shop]);
+            set_shop(ocr::config.enum_conversion(*shop));
         }
         else
         {
@@ -84,12 +79,7 @@ namespace ocr {
         }
         case receipt::iterator::line:
         {
-            std::map<receipt::shop, int> padding{
-                {receipt::shop::edeka, 6},
-                {receipt::shop::rewe, 20},
-                {receipt::shop::aldi, 18},
-                {receipt::shop::unknown, 20},
-            };
+            std::map<receipt::shop, int> padding = ocr::config.get_paddings();
             std::cout << "Padding: " << padding[get_shop()] << std::endl;
             Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding[get_shop()], nullptr, nullptr, nullptr);
             for (int i = 0; i < boxes->n; i++)
@@ -132,8 +122,8 @@ namespace ocr {
         auto filter_article = [&](std::string n)
         {
             bool drop;
-            std::vector<std::string> blacklist = {"summe", "pfand", "leergut", "einweg", "ec-cash"};
-            drop = drop | std::any_of(blacklist.begin(), blacklist.end(),
+            std::vector<std::string> filter_list = ocr::config.get_filters();
+            drop = drop | std::any_of(filter_list.begin(), filter_list.end(),
                                       [&](const auto &b)
                                       {
                                           std::string name;

@@ -2,7 +2,8 @@
     "shops": [
         "edeka",
         "rewe",
-        "aldi"
+        "aldi",
+        "unknown"
     ],
     "paddings": {
         "edeka": 6,

@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "configuration.hpp"
 #include "recognition.hpp"
 
 class receipt_test : public ::testing::Test
@@ -24,6 +25,7 @@ ocr::receipt *receipt_test::m_r3 = nullptr;
 
 void receipt_test::SetUpTestSuite()
 {
+    ocr::config.load("../misc/config.json");
     m_r1 = new ocr::receipt("../misc/input/receipt_1.jpg");
     m_r2 = new ocr::receipt("../misc/input/receipt_2.jpg");
     m_r3 = new ocr::receipt("../misc/input/receipt_3.jpg");
