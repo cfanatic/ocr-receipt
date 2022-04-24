@@ -16,6 +16,9 @@ namespace ocr
         static configuration &get_instance();
 
         void load(const std::string &path);
+        std::vector<std::string> get_shops();
+        std::map<std::string, int> get_paddings();
+        std::vector<std::string> get_filters();
 
         void set_path(const std::string &path)
         {
@@ -33,6 +36,10 @@ namespace ocr
         configuration &operator=(configuration &&) = delete;
 
         std::string m_path;
+        boost::property_tree::ptree m_config;
+        std::vector<std::string> m_shops;
+        std::map<std::string, int> m_paddings;
+        std::vector<std::string> m_filters;
     };
 
     extern configuration &config;

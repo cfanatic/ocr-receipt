@@ -1,0 +1,20 @@
+{
+    "shops": [
+        "edeka",
+        "rewe",
+        "aldi"
+    ],
+    "paddings": {
+        "edeka": 6,
+        "rewe": 20,
+        "aldi": 18,
+        "unknown": 20
+    },
+    "filters": [
+        "summe",
+        "pfand",
+        "leergut",
+        "einweg",
+        "ec-cash"
+    ]
+}
