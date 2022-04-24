@@ -59,6 +59,9 @@ namespace ocr
         void overlay(std::vector<detection> detections);
         std::vector<article> process(std::vector<detection> detections);
 
+        shop get_shop() const { return m_shop; }
+        void set_shop(shop shop) { m_shop = std::move(shop); }
+
         friend std::ostream &operator<<(std::ostream &os, const shop &s)
         {
             std::map<shop, std::string> shops{
@@ -80,13 +83,12 @@ namespace ocr
             return os << boost::format("Article=%s, Price=%.2f") % a.name % a.price << std::endl;
         }
 
-        shop m_shop;
-
     private:
         std::string m_path;
         Pix *m_img_pix;
         cv::Mat m_img_cv;
         tesseract::TessBaseAPI *m_api;
+        shop m_shop;
     };
 
 } // namespace ocr

@@ -63,13 +63,13 @@ namespace ocr {
         };
         if (shop != whitelist.end())
         {
-            m_shop = shops[*shop];
+            set_shop(shops[*shop]);
         }
         else
         {
-            m_shop = receipt::shop::unknown;
+            set_shop(receipt::shop::unknown);
         }
-        std::cout << "Found: " << m_shop << std::endl;
+        std::cout << "Found: " << get_shop() << std::endl;
     }
 
     std::vector<receipt::detection> receipt::extract(receipt::iterator level)
@@ -88,11 +88,11 @@ namespace ocr {
             std::map<receipt::shop, int> padding{
                 {receipt::shop::edeka, 6},
                 {receipt::shop::rewe, 20},
-                {receipt::shop::aldi, 20},
+                {receipt::shop::aldi, 18},
                 {receipt::shop::unknown, 20},
             };
-            std::cout << "Padding: " << padding[m_shop] << std::endl;
-            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding[m_shop], nullptr, nullptr, nullptr);
+            std::cout << "Padding: " << padding[get_shop()] << std::endl;
+            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding[get_shop()], nullptr, nullptr, nullptr);
             for (int i = 0; i < boxes->n; i++)
             {
                 auto box = boxaGetBox(boxes, i, L_CLONE);
