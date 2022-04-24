@@ -42,32 +42,35 @@ void receipt_test::TearDownTestSuite()
     delete m_r3;
 }
 
-TEST_F(receipt_test, extract_receipt_1)
+TEST_F(receipt_test, receipt_1)
 {
+    std::vector<ocr::receipt::article> articles_gt = {
+        ocr::receipt::article{"Milchreis Schoko", 0.29},
+        ocr::receipt::article{"Milchreis Kirsch", 0.29},
+    };
+    m_r1->preprocess();
     auto detections = m_r1->extract();
-    EXPECT_EQ(detections[0].text, "EUR");
-    EXPECT_EQ(detections[1].text, "MILCHREIS SCHOKO 0,29 B");
-    EXPECT_EQ(detections[2].text, "MILCHREIS KIRSCH 0,29 B");
-    EXPECT_EQ(detections[3].text, "Geg. EC-Cash EUR 0, 58");
+    auto articles = m_r1->process(detections);
+    EXPECT_EQ(m_r1->get_shop(), ocr::receipt::shop::unknown);
+    EXPECT_EQ(articles, articles_gt);
 }
 
-TEST_F(receipt_test, extract_receipt_2)
+TEST_F(receipt_test, receipt_2)
 {
+    std::vector<ocr::receipt::article> articles_gt = {
+        ocr::receipt::article{"Konfitüre Extra", 1.29},
+        ocr::receipt::article{"Feine Kleinkuchen", 1.79},
+        ocr::receipt::article{"Erdbeeren 5009", 0.99},
+        ocr::receipt::article{"Spargel Grün 4009", 2.99},
+    };
+    m_r2->preprocess();
     auto detections = m_r2->extract();
-    EXPECT_EQ(detections[0].text, "EUR");
-    EXPECT_EQ(detections[1].text, "814373 Konfitüre Extra 1,29 A");
-    EXPECT_EQ(detections[2].text, "44718 Feine Kleinkuchen 1,79 A");
-    EXPECT_EQ(detections[3].text, "60819 Erdbeeren 5009 0,99 A");
-    EXPECT_EQ(detections[4].text, "814989 Spargel grün 4009 2,99 A");
+    auto articles = m_r2->process(detections);
+    EXPECT_EQ(m_r2->get_shop(), ocr::receipt::shop::unknown);
+    EXPECT_EQ(articles, articles_gt);
 }
 
-TEST_F(receipt_test, preprocess_receipt_3)
-{
-    m_r3->preprocess();
-    EXPECT_EQ(m_r3->get_shop(), ocr::receipt::shop::aldi);
-}
-
-TEST_F(receipt_test, process_receipt_3)
+TEST_F(receipt_test, receipt_3)
 {
     std::vector<ocr::receipt::article> articles_gt = {
         ocr::receipt::article{"Wrigleys Extra I.", 2.25},
@@ -83,5 +86,6 @@ TEST_F(receipt_test, process_receipt_3)
     m_r3->preprocess();
     auto detections = m_r3->extract();
     auto articles = m_r3->process(detections);
+    EXPECT_EQ(m_r3->get_shop(), ocr::receipt::shop::aldi);
     EXPECT_EQ(articles, articles_gt);
 }

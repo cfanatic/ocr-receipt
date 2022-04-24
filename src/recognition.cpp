@@ -133,7 +133,7 @@ namespace ocr {
         auto filter_article = [&](std::string n)
         {
             bool drop;
-            std::vector<std::string> blacklist = {"summe", "pfand", "leergut", "einweg"};
+            std::vector<std::string> blacklist = {"summe", "pfand", "leergut", "einweg", "ec-cash"};
             drop = drop | std::any_of(blacklist.begin(), blacklist.end(),
                                       [&](const auto &b)
                                       {
