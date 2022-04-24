@@ -63,7 +63,7 @@ namespace ocr {
         {
             set_shop(receipt::shop::unknown);
         }
-        std::cout << "Found: " << get_shop() << std::endl;
+        std::cout << "Shop: " << get_shop() << std::endl;
     }
 
     std::vector<receipt::detection> receipt::extract(receipt::iterator level)
