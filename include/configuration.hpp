@@ -40,7 +40,8 @@ namespace ocr
 
         std::string m_path;
         boost::property_tree::ptree m_config;
-        std::map<std::string, receipt::shop> m_shops;
+        std::vector<std::string> m_shops;
+        std::map<std::string, receipt::shop> m_shops_enum;
         std::map<receipt::shop, int> m_paddings;
         std::vector<std::string> m_filters;
     };

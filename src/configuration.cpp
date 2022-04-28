@@ -17,7 +17,8 @@ namespace ocr
         for (boost::property_tree::ptree::value_type &shop : m_config.get_child("shops"))
         {
             static int i;
-            m_shops[shop.second.data()] = static_cast<ocr::receipt::shop>(i);
+            m_shops.push_back(shop.second.data());
+            m_shops_enum[shop.second.data()] = static_cast<ocr::receipt::shop>(i);
             i++;
         }
         for (boost::property_tree::ptree::value_type &padding : m_config.get_child("paddings"))
@@ -34,15 +35,12 @@ namespace ocr
 
     receipt::shop configuration::enum_conversion(std::string shop)
     {
-        return m_shops[shop];
+        return m_shops_enum[shop];
     }
 
     std::vector<std::string> configuration::get_shops()
     {
-        std::vector<std::string> shops;
-        std::transform(m_shops.begin(), m_shops.end(), std::back_inserter(shops), [](std::pair<std::string, receipt::shop> s)
-                       { return s.first; });
-        return shops;
+        return m_shops;
     }
 
     std::map<receipt::shop, int> configuration::get_paddings()
