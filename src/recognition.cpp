@@ -49,15 +49,15 @@ namespace ocr {
     {
         std::string text = m_api->GetUTF8Text();
         std::vector<std::string> shop_list = ocr::config.get_shops();
-        auto shop = std::find_if(shop_list.begin(), shop_list.end(),
-                                 [&](const auto &w)
-                                 {
-                                     text = boost::locale::to_lower(text);
-                                     return text.find(w) != std::string::npos;
-                                 });
-        if (shop != shop_list.end())
+        auto shop_it = std::find_if(shop_list.begin(), shop_list.end(),
+                                    [&](const auto &s)
+                                    {
+                                        text = boost::locale::to_lower(text);
+                                        return text.find(s) != std::string::npos;
+                                    });
+        if (shop_it != shop_list.end())
         {
-            set_shop(ocr::config.enum_conversion(*shop));
+            set_shop(ocr::config.enum_conversion(*shop_it));
         }
         else
         {
@@ -124,11 +124,11 @@ namespace ocr {
             bool drop;
             std::vector<std::string> filter_list = ocr::config.get_filters();
             drop = drop | std::any_of(filter_list.begin(), filter_list.end(),
-                                      [&](const auto &b)
+                                      [&](const auto &f)
                                       {
                                           std::string name;
                                           name = boost::locale::to_lower(n);
-                                          return name.find(b) != std::string::npos;
+                                          return name.find(f) != std::string::npos;
                                       });
             drop = drop | n.length() < 3;
             return drop;
