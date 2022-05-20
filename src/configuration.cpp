@@ -31,6 +31,7 @@ namespace ocr
         {
             m_filters.push_back(filter.second.data());
         }
+        m_threshold = m_config.get<int>("detection_conf_thres", 0);
     }
 
     receipt::shop configuration::enum_conversion(std::string shop)
@@ -51,5 +52,10 @@ namespace ocr
     std::vector<std::string> configuration::get_filters()
     {
         return m_filters;
+    }
+
+    int configuration::get_threshold()
+    {
+        return m_threshold;
     }
 }

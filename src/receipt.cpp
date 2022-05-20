@@ -88,7 +88,7 @@ namespace ocr
                 int x = box->x, y = box->y, w = box->w, h = box->h;
                 m_api->SetRectangle(x, y, w, h);
                 int conf = m_api->MeanTextConf();
-                if (conf > 30)
+                if (conf > ocr::config.get_threshold())
                 {
                     std::string text = m_api->GetUTF8Text();
                     text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());

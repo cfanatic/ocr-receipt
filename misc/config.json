@@ -17,5 +17,6 @@
         "leergut",
         "einweg",
         "ec-cash"
-    ]
+    ],
+    "detection_conf_thres": 30
 }

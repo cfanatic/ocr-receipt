@@ -22,6 +22,7 @@ namespace ocr
         std::vector<std::string> get_shops();
         std::map<receipt::shop, int> get_paddings();
         std::vector<std::string> get_filters();
+        int get_threshold();
 
         void set_path(const std::string &path)
         {
@@ -44,6 +45,7 @@ namespace ocr
         std::map<std::string, receipt::shop> m_shops_enum;
         std::map<receipt::shop, int> m_paddings;
         std::vector<std::string> m_filters;
+        int m_threshold;
     };
 
     extern configuration &config;
