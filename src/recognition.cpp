@@ -79,9 +79,8 @@ namespace ocr {
         }
         case receipt::iterator::line:
         {
-            std::map<receipt::shop, int> padding = ocr::config.get_paddings();
-            std::cout << "Padding: " << padding[get_shop()] << std::endl;
-            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding[get_shop()], nullptr, nullptr, nullptr);
+            std::map<receipt::shop, int> paddings = ocr::config.get_paddings();
+            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, paddings[get_shop()], nullptr, nullptr, nullptr);
             for (int i = 0; i < boxes->n; i++)
             {
                 auto box = boxaGetBox(boxes, i, L_CLONE);
