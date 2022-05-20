@@ -39,22 +39,22 @@ namespace ocr
         return m_shops_enum[shop];
     }
 
-    std::vector<std::string> configuration::get_shops()
+    std::vector<std::string> configuration::get_shops() const
     {
         return m_shops;
     }
 
-    std::map<receipt::shop, int> configuration::get_paddings()
+    std::map<receipt::shop, int> configuration::get_paddings() const
     {
         return m_paddings;
     }
 
-    std::vector<std::string> configuration::get_filters()
+    std::vector<std::string> configuration::get_filters() const
     {
         return m_filters;
     }
 
-    int configuration::get_threshold()
+    int configuration::get_threshold() const
     {
         return m_threshold;
     }

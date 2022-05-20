@@ -19,10 +19,10 @@ namespace ocr
         void load(const std::string &path);
         receipt::shop enum_conversion(std::string shop);
 
-        std::vector<std::string> get_shops();
-        std::map<receipt::shop, int> get_paddings();
-        std::vector<std::string> get_filters();
-        int get_threshold();
+        std::vector<std::string> get_shops() const;
+        std::map<receipt::shop, int> get_paddings() const;
+        std::vector<std::string> get_filters() const;
+        int get_threshold() const;
 
         void set_path(const std::string &path)
         {
