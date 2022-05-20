@@ -1,7 +1,8 @@
 #include "configuration.hpp"
-#include "recognition.hpp"
+#include "receipt.hpp"
 
-namespace ocr {
+namespace ocr
+{
 
     receipt::receipt(const std::string &path)
     {

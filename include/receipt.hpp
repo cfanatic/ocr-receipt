@@ -1,5 +1,5 @@
-#ifndef RECOGNITION_HPP
-#define RECOGNITION_HPP
+#ifndef RECEIPT_HPP
+#define RECEIPT_HPP
 
 #include <algorithm>
 #include <iostream>
@@ -105,4 +105,4 @@ namespace ocr
 
 } // namespace ocr
 
-#endif // RECOGNITION_HPP
+#endif // RECEIPT_HPP

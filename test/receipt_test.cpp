@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "configuration.hpp"
-#include "recognition.hpp"
+#include "receipt.hpp"
 
 class receipt_test : public ::testing::Test
 {

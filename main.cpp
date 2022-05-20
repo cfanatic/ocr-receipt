@@ -1,5 +1,5 @@
 #include "configuration.hpp"
-#include "recognition.hpp"
+#include "receipt.hpp"
 
 namespace po = boost::program_options;
 

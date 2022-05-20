@@ -6,7 +6,7 @@
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include "recognition.hpp"
+#include "receipt.hpp"
 
 namespace ocr
 {
