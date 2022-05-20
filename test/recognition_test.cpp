@@ -50,7 +50,6 @@ TEST_F(receipt_test, receipt_1)
         ocr::receipt::article{"Milchreis Schoko", 0.29},
         ocr::receipt::article{"Milchreis Kirsch", 0.29},
     };
-    m_r1->preprocess();
     std::vector<ocr::receipt::detection> detections = m_r1->extract();
     std::vector<ocr::receipt::article> articles = m_r1->process(detections);
     EXPECT_EQ(m_r1->get_shop(), ocr::receipt::shop::unknown);
@@ -65,7 +64,6 @@ TEST_F(receipt_test, receipt_2)
         ocr::receipt::article{"Erdbeeren 5009", 0.99},
         ocr::receipt::article{"Spargel Grün 4009", 2.99},
     };
-    m_r2->preprocess();
     std::vector<ocr::receipt::detection> detections = m_r2->extract();
     std::vector<ocr::receipt::article> articles = m_r2->process(detections);
     EXPECT_EQ(m_r2->get_shop(), ocr::receipt::shop::unknown);
@@ -85,7 +83,6 @@ TEST_F(receipt_test, receipt_3)
         ocr::receipt::article{"Kerryg Orig 309", 1.39},
         ocr::receipt::article{"Kerryg Orig 5090", 1.39},
     };
-    m_r3->preprocess();
     std::vector<ocr::receipt::detection> detections = m_r3->extract();
     std::vector<ocr::receipt::article> articles = m_r3->process(detections);
     EXPECT_EQ(m_r3->get_shop(), ocr::receipt::shop::aldi);
