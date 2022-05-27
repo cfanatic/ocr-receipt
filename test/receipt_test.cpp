@@ -17,11 +17,13 @@ public:
     static ocr::receipt *m_r1;
     static ocr::receipt *m_r2;
     static ocr::receipt *m_r3;
+    static ocr::receipt *m_r4;
 };
 
 ocr::receipt *receipt_test::m_r1 = nullptr;
 ocr::receipt *receipt_test::m_r2 = nullptr;
 ocr::receipt *receipt_test::m_r3 = nullptr;
+ocr::receipt *receipt_test::m_r4 = nullptr;
 
 void receipt_test::SetUpTestSuite()
 {
@@ -29,12 +31,15 @@ void receipt_test::SetUpTestSuite()
     m_r1 = new ocr::receipt("../misc/input/receipt_1.jpg");
     m_r2 = new ocr::receipt("../misc/input/receipt_2.jpg");
     m_r3 = new ocr::receipt("../misc/input/receipt_3.jpg");
+    m_r4 = new ocr::receipt("../misc/input/receipt_4.jpg");
     m_r1->init();
     m_r1->preprocess();
     m_r2->init();
     m_r2->preprocess();
     m_r3->init();
     m_r3->preprocess();
+    m_r4->init();
+    m_r4->preprocess();
 }
 
 void receipt_test::TearDownTestSuite()
@@ -42,6 +47,7 @@ void receipt_test::TearDownTestSuite()
     delete m_r1;
     delete m_r2;
     delete m_r3;
+    delete m_r4;
 }
 
 TEST_F(receipt_test, receipt_1)
@@ -86,5 +92,17 @@ TEST_F(receipt_test, receipt_3)
     std::vector<ocr::receipt::detection> detections = m_r3->extract();
     std::vector<ocr::receipt::article> articles = m_r3->process(detections);
     EXPECT_EQ(m_r3->get_shop(), ocr::receipt::shop::aldi);
+    EXPECT_EQ(articles, articles_gt);
+}
+
+TEST_F(receipt_test, receipt_4)
+{
+    std::vector<ocr::receipt::article> articles_gt = {
+        ocr::receipt::article{"Dany Schoko-Hasel.", 0.99},
+        ocr::receipt::article{"Dany Schokd-Kokos", 0.99},
+    };
+    std::vector<ocr::receipt::detection> detections = m_r4->extract();
+    std::vector<ocr::receipt::article> articles = m_r4->process(detections);
+    EXPECT_EQ(m_r4->get_shop(), ocr::receipt::shop::edeka);
     EXPECT_EQ(articles, articles_gt);
 }

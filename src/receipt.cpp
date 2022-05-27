@@ -138,6 +138,7 @@ namespace ocr
         auto convert_name = [&](std::string n)
         {
             std::string name;
+            n = std::regex_replace(n, std::regex(" ,"), ".");
             name = boost::locale::to_title(n);
             return name;
         };

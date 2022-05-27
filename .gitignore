@@ -5,7 +5,9 @@ misc/input/*
 !misc/input/receipt_1.jpg
 !misc/input/receipt_2.jpg
 !misc/input/receipt_3.jpg
+!misc/input/receipt_4.jpg
 misc/output/*
 !misc/output/receipt_1_overlay.jpg
 !misc/output/receipt_2_overlay.jpg
 !misc/output/receipt_3_overlay.jpg
+!misc/output/receipt_4_overlay.jpg
