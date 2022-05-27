@@ -13,7 +13,7 @@ struct article
 std::vector<article> results;
 ```
 
-![Detection Results](https://media.githubusercontent.com/media/cfanatic/ocr-receipt/master/misc/input/receipt_2_overlay.jpg)
+![Detection Results](https://media.githubusercontent.com/media/cfanatic/ocr-receipt/master/misc/output/receipt_2_overlay.jpg)
 
 ```text
 $ ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg
