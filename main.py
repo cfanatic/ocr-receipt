@@ -7,12 +7,16 @@ from src.receipt import receipt
 
 def main(argc, argv):
     path_i = argv[1]
-    r = receipt(path_i)
-    r.init()
-    r.preprocess()
-    detections = r.extract()
-    articles = r.process(detections)
-    print(articles)
+    try:
+        r = receipt(path_i)
+        r.init()
+        r.preprocess()
+        detections = r.extract()
+        articles = r.process(detections)
+    except FileNotFoundError:
+        print("Error: Cannot find {}".format(path_i))
+    else:
+        print(articles)
 
 if __name__ == "__main__":
     main(len(sys.argv), sys.argv)
