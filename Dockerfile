@@ -13,6 +13,7 @@ RUN apt-get -y install \
     cmake \
     make \
     g++ \
+    pip \
     ca-certificates \
     libboost-filesystem-dev \
     libboost-locale-dev \
@@ -45,6 +46,8 @@ RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/eng.traineddata
     -P /usr/local/share/tessdata
 RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/deu.traineddata \
     -P /usr/local/share/tessdata
+
+RUN pip3 install torch torchvision easyocr
 
 RUN echo "alias c='clear'" >> /root/.bashrc
 RUN echo "alias ll='ls -l'" >> /root/.bashrc
