@@ -107,12 +107,14 @@ namespace ocr
 
     void receipt::overlay(std::vector<receipt::detection> detections)
     {
+        std::string path_out = m_path;
         for (const auto &d : detections)
         {
             cv::Rect rec = cv::Rect(d.x, d.y, d.w, d.h);
             cv::rectangle(m_img_cv, rec, cv::Scalar(0, 0, 255), 2, 8, 0);
         }
-        std::string path_out = std::regex_replace(m_path, std::regex(".jpg"), "_overlay.jpg");
+        path_out = std::regex_replace(path_out, std::regex("input"), "output");
+        path_out = std::regex_replace(path_out, std::regex(".jpg"), "_overlay.jpg");
         cv::imwrite(path_out, m_img_cv);
     }
 
