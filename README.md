@@ -39,6 +39,7 @@ The project itself is automatically built inside a Docker container based on fol
 - Leptonica 1.82.0
 - Boost 1.74.0
 - OpenCV 4.5.4
+- Python 3.10.4
 
 ## Setup
 
