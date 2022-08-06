@@ -3,10 +3,10 @@ import easyocr
 class receipt():
 
     def __init__(self, path: str):
-        self.path = path
-        self.reader = easyocr.Reader(["de", "en"])
-        self.detections = None
-        self.articles = None
+        self._path = path
+        self._reader = easyocr.Reader(["de", "en"])
+        self._detections = None
+        self._articles = None
 
     def init(self):
         pass
@@ -15,12 +15,12 @@ class receipt():
         pass
 
     def extract(self) -> list:
-        self.detections = self.reader.readtext(self.path, detail=0)
-        return self.detections
+        self._detections = self._reader.readtext(self._path, detail=0)
+        return self._detections
 
     def overlay(self):
         pass
 
     def process(self, detections: list) -> list:
-        self.articles = detections
-        return self.articles
+        self._articles = detections
+        return self._articles
