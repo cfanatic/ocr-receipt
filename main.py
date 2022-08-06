@@ -16,8 +16,10 @@ class receipt():
         self._img_cv = cv2.imread(self._path)
         pass
 
-    def preprocess(self):
-        pass
+    def preprocess(self, box: list):
+        offset = 20
+        x, y, w, h = box[0]+offset, box[1]+offset, box[2]-offset, box[3]-offset
+        self._img_cv = self._img_cv[y:y+h, x:x+w]
 
     def extract(self) -> list:
         return self._reader.readtext(self._img_cv, detail=0)
@@ -32,15 +34,16 @@ class receipt():
 def main(argc, argv):
     try:
         path_i = argv[1]
+        box_i = [int(c) for c in argv[2].split(",")]
         r = receipt(path_i)
         r.init()
-        r.preprocess()
+        r.preprocess(box_i)
         detections = r.extract()
         articles = r.process(detections)
     except FileNotFoundError:
         print("Error: Cannot find {}".format(path_i))
     except IndexError:
-        print("Error: No path to input file given")
+        print("Error: No path to input file and/or box coordinates given")
     else:
         print(articles)
 
