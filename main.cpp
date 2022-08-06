@@ -1,4 +1,5 @@
 #include "configuration.hpp"
+#include "easyocr.hpp"
 #include "receipt.hpp"
 
 namespace po = boost::program_options;
@@ -43,6 +44,9 @@ int main(int argc, char *argv[])
     for (const auto &a : articles)
         std::cout << a;
     r.overlay(detections);
+
+    ocr::easyocr wrapper;
+    wrapper.print();
 
     return 0;
 }

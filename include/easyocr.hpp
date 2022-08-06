@@ -8,10 +8,13 @@ namespace ocr
 
     class easyocr
     {
+
+    public:
         easyocr();
         ~easyocr();
 
-    public:
+        void print() const;
+
     private:
     };
 
