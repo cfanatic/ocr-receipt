@@ -33,6 +33,12 @@ namespace ocr
             word
         };
 
+        enum class extraction
+        {
+            tesseract,
+            easyocr
+        };
+
         struct detection
         {
             int id;
@@ -60,7 +66,7 @@ namespace ocr
 
         void init();
         void preprocess();
-        std::vector<detection> extract(iterator level = iterator::line);
+        std::vector<detection> extract(iterator level = iterator::line, extraction engine = extraction::tesseract);
         void overlay(std::vector<detection> detections);
         std::vector<article> process(std::vector<detection> detections);
 
