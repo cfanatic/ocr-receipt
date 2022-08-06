@@ -6,8 +6,8 @@ sys.dont_write_bytecode = True
 from src.receipt import receipt
 
 def main(argc, argv):
-    path_i = argv[1]
     try:
+        path_i = argv[1]
         r = receipt(path_i)
         r.init()
         r.preprocess()
@@ -15,6 +15,8 @@ def main(argc, argv):
         articles = r.process(detections)
     except FileNotFoundError:
         print("Error: Cannot find {}".format(path_i))
+    except IndexError:
+        print("Error: No path to input file given")
     else:
         print(articles)
 
