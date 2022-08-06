@@ -47,7 +47,7 @@ RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/eng.traineddata
 RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/deu.traineddata \
     -P /usr/local/share/tessdata
 
-RUN pip3 install torch torchvision easyocr
+RUN pip3 install torch==1.11.0 torchvision==0.12.0 easyocr==1.5.0
 
 RUN echo "alias c='clear'" >> /root/.bashrc
 RUN echo "alias ll='ls -l'" >> /root/.bashrc
