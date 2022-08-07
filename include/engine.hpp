@@ -23,7 +23,8 @@ namespace ocr
         virtual void print() = 0;
 
     protected:
-        name get_engine() { return m_engine; };
+        void set_engine(const name &engine) { m_engine = std::move(engine); }
+        name get_engine() const { return m_engine; };
 
         friend std::ostream &operator<<(std::ostream &os, const name &n)
         {
@@ -34,6 +35,7 @@ namespace ocr
             return os << names[n];
         }
 
+    private:
         name m_engine;
     };
 

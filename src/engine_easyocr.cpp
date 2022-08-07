@@ -5,8 +5,8 @@ namespace ocr
 
     engine_easyocr::engine_easyocr()
     {
-        m_engine = name::easyocr;
         Py_Initialize();
+        set_engine(name::easyocr);
     }
 
     engine_easyocr::~engine_easyocr()

@@ -5,7 +5,7 @@ namespace ocr
 
     engine_tesseract::engine_tesseract()
     {
-        m_engine = name::tesseract;
+        set_engine(name::tesseract);
     }
 
     engine_tesseract::~engine_tesseract()
