@@ -67,7 +67,7 @@ namespace ocr
         std::cout << "Shop: " << get_shop() << std::endl;
     }
 
-    std::vector<receipt::detection> receipt::extract(extraction engine, iterator level)
+    std::vector<receipt::detection> receipt::extract(engine::name engine, iterator level)
     {
         std::vector<receipt::detection> detections;
         switch (level)
@@ -88,16 +88,16 @@ namespace ocr
                 int x = box->x, y = box->y, w = box->w, h = box->h;
                 m_api->SetRectangle(x, y, w, h);
                 int conf = m_api->MeanTextConf();
-                if (conf > ocr::config.get_threshold() && engine == receipt::extraction::tesseract)
+                if (conf > ocr::config.get_threshold() && engine == engine::name::easyocr)
+                {
+                    // todo: call wrapper
+                }
+                else if (conf > ocr::config.get_threshold() && engine == engine::name::tesseract)
                 {
                     std::string text = m_api->GetUTF8Text();
                     text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
                     receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
                     detections.push_back(detection);
-                }
-                else if (conf > ocr::config.get_threshold() && engine == receipt::extraction::easyocr)
-                {
-                    // todo: call wrapper
                 }
                 boxDestroy(&box);
             }

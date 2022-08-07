@@ -11,6 +11,7 @@
 #include <leptonica/allheaders.h>
 #include <opencv2/opencv.hpp>
 #include <tesseract/baseapi.h>
+#include "engine.hpp"
 
 namespace ocr
 {
@@ -31,12 +32,6 @@ namespace ocr
             block,
             line,
             word
-        };
-
-        enum class extraction
-        {
-            tesseract,
-            easyocr
         };
 
         struct detection
@@ -66,7 +61,7 @@ namespace ocr
 
         void init();
         void preprocess();
-        std::vector<detection> extract(extraction engine = extraction::tesseract, iterator level = iterator::line);
+        std::vector<detection> extract(engine::name engine = engine::name::tesseract, iterator level = iterator::line);
         void overlay(std::vector<detection> detections);
         std::vector<article> process(std::vector<detection> detections);
 
