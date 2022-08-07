@@ -77,7 +77,6 @@ namespace ocr
                     receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
                     detections.push_back(detection);
                 }
-                boxDestroy(&box); // todo: remove function call
             }
             break;
         }

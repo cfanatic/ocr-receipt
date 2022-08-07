@@ -35,6 +35,7 @@ namespace ocr
         tesseract::TessBaseAPI *m_api;
         cv::Mat m_img_cv;
         Pix *m_img_pix;
+        std::vector<engine_tesseract::box *> bounding_box_storage;
     };
 
 } // namespace ocr

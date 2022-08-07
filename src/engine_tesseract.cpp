@@ -11,6 +11,10 @@ namespace ocr
 
     engine_tesseract::~engine_tesseract()
     {
+        for (auto box : bounding_box_storage)
+        {
+            boxDestroy(&box);
+        }
         pixDestroy(&m_img_pix);
         m_img_cv.release();
         m_api->End();
@@ -73,7 +77,9 @@ namespace ocr
 
     engine_tesseract::box *engine_tesseract::get_bounding_box(engine_tesseract::boxx *bounding_boxes, int index)
     {
-        return boxaGetBox(bounding_boxes, index, L_CLONE);
+        engine_tesseract::box *box = boxaGetBox(bounding_boxes, index, L_CLONE);
+        bounding_box_storage.push_back(box);
+        return box;
     }
 
     void engine_tesseract::set_bounding_box(int left, int top, int width, int height)

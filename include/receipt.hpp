@@ -96,7 +96,7 @@ namespace ocr
     private:
         std::string m_path;
         shop m_shop;
-        engine_tesseract *m_engine; // todo: pointer variable chosen to use base class in future
+        engine_tesseract *m_engine;
     };
 
 } // namespace ocr
