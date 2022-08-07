@@ -11,7 +11,6 @@ RUN apt-get -y install \
     nano \
     wget \
     cmake \
-    make \
     ninja-build \
     g++ \
     pip \
@@ -32,16 +31,16 @@ FROM ubuntu-base
 RUN git clone --depth 1 --branch 1.82.0 https://github.com/DanBloomberg/leptonica.git /src/leptonica
 RUN mkdir /src/leptonica/build
 WORKDIR /src/leptonica/build
-RUN cmake ..
-RUN make -j8
-RUN make install
+RUN cmake -GNinja ..
+RUN ninja -j8
+RUN ninja install
 
 RUN git clone --depth 1 --branch 5.1.0 https://github.com/tesseract-ocr/tesseract.git /src/tesseract
 RUN mkdir /src/tesseract/build
 WORKDIR /src/tesseract/build
-RUN cmake ..
-RUN make -j8
-RUN make install
+RUN cmake -GNinja ..
+RUN ninja -j8
+RUN ninja install
 RUN ldconfig
 RUN wget https://github.com/tesseract-ocr/tessdata_fast/raw/main/eng.traineddata \
     -P /usr/local/share/tessdata
