@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 main() {
-    cmake ..
-    make
+    cmake -GNinja ..
+    ninja
     ctest
 }
 

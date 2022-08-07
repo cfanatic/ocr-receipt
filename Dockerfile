@@ -12,6 +12,7 @@ RUN apt-get -y install \
     wget \
     cmake \
     make \
+    ninja-build \
     g++ \
     pip \
     ca-certificates \
