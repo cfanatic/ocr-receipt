@@ -14,12 +14,25 @@ namespace ocr
         Py_Finalize();
     }
 
-    void engine_easyocr::print()
+    void engine_easyocr::init()
     {
-        std::cout << "Engine: " << get_engine() << std::endl;
     }
 
-    void engine_easyocr::python()
+    std::string engine_easyocr::text()
+    {
+        return std::string("-");
+    }
+
+    int engine_easyocr::conf()
+    {
+        return 0;
+    }
+
+    void engine_easyocr::overlay(const std::vector<std::vector<int>> &bounding_boxes)
+    {
+    }
+
+    void engine_easyocr::print()
     {
         PyRun_SimpleString("print(\"Hello World from Python!!\")");
     }

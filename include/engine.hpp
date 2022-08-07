@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 
 namespace ocr
 {
@@ -20,11 +21,18 @@ namespace ocr
         engine() = default;
         virtual ~engine() = default;
 
-        virtual void print() = 0;
+        virtual void init() = 0;
+        virtual std::string text() = 0;
+        virtual int conf() = 0;
+        virtual void overlay(const std::vector<std::vector<int>> &bounding_boxes) = 0;
 
-    protected:
         void set_engine(const name &engine) { m_engine = std::move(engine); }
         name get_engine() const { return m_engine; };
+        void set_path(const std::string &path)
+        {
+            m_path = std::move(path);
+        }
+        std::string get_path() const { return m_path; }
 
         friend std::ostream &operator<<(std::ostream &os, const name &n)
         {
@@ -37,6 +45,7 @@ namespace ocr
 
     private:
         name m_engine;
+        std::string m_path;
     };
 
 } // namespace ocr

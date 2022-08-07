@@ -7,40 +7,18 @@ namespace ocr
     receipt::receipt(const std::string &path)
     {
         set_path(path);
-        m_api = new tesseract::TessBaseAPI();
+        m_engine = new engine_tesseract();
+        m_engine->set_path(get_path());
     }
 
     receipt::~receipt()
     {
-        pixDestroy(&m_img_pix);
-        m_img_cv.release();
-        m_api->End();
-        delete m_api;
+        delete m_engine;
     }
 
     void receipt::init()
     {
-        int orient_deg;
-        float orient_conf;
-        if (m_api->Init(nullptr, "deu", tesseract::OEM_LSTM_ONLY))
-        {
-            std::cerr << "Error: Could not initialize Tesseract" << std::endl;
-        }
-        else
-        {
-            m_img_pix = pixRead(m_path.c_str());
-            m_img_cv = cv::imread(m_path.c_str());
-            m_api->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-            m_api->SetImage(m_img_pix);
-        }
-        if (!m_api->DetectOrientationScript(&orient_deg, &orient_conf, nullptr, nullptr))
-        {
-            std::cerr << "Error: Could not detect the orientation of the input image" << std::endl;
-        }
-        else
-        {
-            std::cout << boost::format("orient_deg=%d, orient_conf=%.2f") % orient_deg % orient_conf << std::endl;
-        }
+        m_engine->init();
         boost::locale::generator gen;
         std::locale loc = gen("de_DE.UTF-8");
         std::locale::global(loc);
@@ -48,7 +26,7 @@ namespace ocr
 
     void receipt::preprocess()
     {
-        std::string text = m_api->GetUTF8Text();
+        std::string text = m_engine->text();
         std::vector<std::string> shop_list = ocr::config.get_shops();
         auto shop_it = std::find_if(shop_list.begin(), shop_list.end(),
                                     [&](const auto &s)
@@ -74,32 +52,32 @@ namespace ocr
         {
         case receipt::iterator::block:
         {
-            receipt::detection detection = {0, 0, 0, 0, 0, m_api->MeanTextConf(), m_api->GetUTF8Text()};
+            receipt::detection detection = {0, 0, 0, 0, 0, m_engine->conf(), m_engine->text()};
             detections.push_back(detection);
             break;
         }
         case receipt::iterator::line:
         {
             std::map<receipt::shop, int> paddings = ocr::config.get_paddings();
-            Boxa *boxes = m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, paddings[get_shop()], nullptr, nullptr, nullptr);
+            engine_tesseract::boxx *boxes = m_engine->get_bounding_boxes(paddings[get_shop()]);
             for (int i = 0; i < boxes->n; i++)
             {
-                auto box = boxaGetBox(boxes, i, L_CLONE);
+                engine_tesseract::box *box = m_engine->get_bounding_box(boxes, i);
                 int x = box->x, y = box->y, w = box->w, h = box->h;
-                m_api->SetRectangle(x, y, w, h);
-                int conf = m_api->MeanTextConf();
+                m_engine->set_bounding_box(x, y, w, h);
+                int conf = m_engine->conf();
                 if (conf > ocr::config.get_threshold() && engine == engine::name::easyocr)
                 {
                     // todo: call wrapper
                 }
                 else if (conf > ocr::config.get_threshold() && engine == engine::name::tesseract)
                 {
-                    std::string text = m_api->GetUTF8Text();
+                    std::string text = m_engine->text();
                     text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
                     receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
                     detections.push_back(detection);
                 }
-                boxDestroy(&box);
+                boxDestroy(&box); // todo: remove function call
             }
             break;
         }
@@ -111,15 +89,13 @@ namespace ocr
 
     void receipt::overlay(std::vector<receipt::detection> detections)
     {
-        std::string path_out = m_path;
+        std::vector<std::vector<int>> bounding_boxes;
         for (const auto &d : detections)
         {
-            cv::Rect rec = cv::Rect(d.x, d.y, d.w, d.h);
-            cv::rectangle(m_img_cv, rec, cv::Scalar(0, 0, 255), 2, 8, 0);
+            std::vector<int> box{d.x, d.y, d.w, d.h};
+            bounding_boxes.push_back(box);
         }
-        path_out = std::regex_replace(path_out, std::regex("input"), "output");
-        path_out = std::regex_replace(path_out, std::regex(".jpg"), "_overlay.jpg");
-        cv::imwrite(path_out, m_img_cv);
+        m_engine->overlay(bounding_boxes);
     }
 
     std::vector<receipt::article> receipt::process(std::vector<receipt::detection> detections)

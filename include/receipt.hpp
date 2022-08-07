@@ -8,10 +8,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/locale.hpp>
-#include <leptonica/allheaders.h>
-#include <opencv2/opencv.hpp>
-#include <tesseract/baseapi.h>
-#include "engine.hpp"
+#include "engine_tesseract.hpp"
 
 namespace ocr
 {
@@ -98,10 +95,8 @@ namespace ocr
 
     private:
         std::string m_path;
-        Pix *m_img_pix;
-        cv::Mat m_img_cv;
-        tesseract::TessBaseAPI *m_api;
         shop m_shop;
+        engine_tesseract *m_engine; // todo: pointer variable chosen to use base class in future
     };
 
 } // namespace ocr

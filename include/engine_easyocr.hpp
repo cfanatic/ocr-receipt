@@ -2,6 +2,7 @@
 #define ENGINE_EASYOCR_HPP
 
 #include <Python.h>
+#include <vector>
 #include "engine.hpp"
 
 namespace ocr
@@ -14,8 +15,12 @@ namespace ocr
         engine_easyocr();
         ~engine_easyocr();
 
-        void print() override;
-        void python();
+        void init() override;
+        std::string text() override;
+        int conf() override;
+        void overlay(const std::vector<std::vector<int>> &bounding_boxes) override;
+
+        void print();
 
     private:
     };
