@@ -67,7 +67,7 @@ namespace ocr
         std::cout << "Shop: " << get_shop() << std::endl;
     }
 
-    std::vector<receipt::detection> receipt::extract(receipt::iterator level, receipt::extraction engine)
+    std::vector<receipt::detection> receipt::extract(extraction engine, iterator level)
     {
         std::vector<receipt::detection> detections;
         switch (level)

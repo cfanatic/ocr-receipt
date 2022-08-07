@@ -66,7 +66,7 @@ namespace ocr
 
         void init();
         void preprocess();
-        std::vector<detection> extract(iterator level = iterator::line, extraction engine = extraction::tesseract);
+        std::vector<detection> extract(extraction engine = extraction::tesseract, iterator level = iterator::line);
         void overlay(std::vector<detection> detections);
         std::vector<article> process(std::vector<detection> detections);
 
