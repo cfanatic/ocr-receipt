@@ -9,6 +9,7 @@ namespace ocr
         set_path(path);
         m_engine = new engine_tesseract();
         m_engine->set_path(get_path());
+        m_engine->init();
     }
 
     receipt::~receipt()
@@ -18,7 +19,6 @@ namespace ocr
 
     void receipt::init()
     {
-        m_engine->init();
         boost::locale::generator gen;
         std::locale loc = gen("de_DE.UTF-8");
         std::locale::global(loc);

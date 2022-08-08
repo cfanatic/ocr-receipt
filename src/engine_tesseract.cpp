@@ -61,7 +61,7 @@ namespace ocr
         std::string path_out = get_path();
         for (const auto &box : bounding_boxes)
         {
-            int x = box[0], y = box[1], w = box[2], h = box[3];
+            const int &x = box[0], &y = box[1], &w = box[2], &h = box[3];
             cv::Rect rec = cv::Rect(x, y, w, h);
             cv::rectangle(m_img_cv, rec, cv::Scalar(0, 0, 255), 2, 8, 0);
         }
