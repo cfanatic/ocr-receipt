@@ -14,7 +14,7 @@ namespace ocr
         Py_Finalize();
     }
 
-    void engine_easyocr::init()
+    void engine_easyocr::init(const std::string &path)
     {
     }
 

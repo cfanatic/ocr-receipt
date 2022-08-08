@@ -21,7 +21,7 @@ namespace ocr
         delete m_api;
     }
 
-    void engine_tesseract::init()
+    void engine_tesseract::init(const std::string &path)
     {
         int orient_deg;
         float orient_conf;
@@ -31,8 +31,8 @@ namespace ocr
         }
         else
         {
-            m_img_pix = pixRead(get_path().c_str());
-            m_img_cv = cv::imread(get_path().c_str());
+            m_img_pix = pixRead(path.c_str());
+            m_img_cv = cv::imread(path.c_str());
             m_api->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
             m_api->SetImage(m_img_pix);
         }
@@ -44,6 +44,7 @@ namespace ocr
         {
             std::cout << boost::format("orient_deg=%d, orient_conf=%.2f") % orient_deg % orient_conf << std::endl;
         }
+        set_path(path);
     }
 
     std::string engine_tesseract::text()

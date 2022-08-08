@@ -7,9 +7,9 @@ namespace ocr
     receipt::receipt(const std::string &path)
     {
         set_path(path);
+        const std::string &path_abs = get_path();
         m_engine = new engine_tesseract();
-        m_engine->set_path(get_path());
-        m_engine->init();
+        m_engine->init(path_abs);
     }
 
     receipt::~receipt()

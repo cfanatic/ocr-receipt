@@ -21,11 +21,12 @@ namespace ocr
         engine() = default;
         virtual ~engine() = default;
 
-        virtual void init() = 0;
+        virtual void init(const std::string &path) = 0;
         virtual std::string text() = 0;
         virtual int conf() = 0;
         virtual void overlay(const std::vector<std::vector<int>> &bounding_boxes) = 0;
 
+    protected:
         void set_engine(const name &engine) { m_engine = std::move(engine); }
         name get_engine() const { return m_engine; };
         void set_path(const std::string &path)

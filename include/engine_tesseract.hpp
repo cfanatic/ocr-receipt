@@ -22,7 +22,7 @@ namespace ocr
         engine_tesseract();
         ~engine_tesseract();
 
-        void init() override;
+        void init(const std::string &path) override;
         std::string text() override;
         int conf() override;
         void overlay(const std::vector<std::vector<int>> &bounding_boxes) override;
