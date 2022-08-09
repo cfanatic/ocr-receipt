@@ -8,8 +8,11 @@ namespace ocr
     {
         set_path(path);
         const std::string &path_abs = get_path();
-        m_engine = new engine_tesseract();
-        m_engine->init(path_abs);
+        // m_engine = new engine_tesseract();
+        // m_engine->init(path_abs);
+        engine_easyocr engine = engine_easyocr();
+        engine.init(path_abs);
+        engine.text();
     }
 
     receipt::~receipt()

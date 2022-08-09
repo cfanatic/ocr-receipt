@@ -8,6 +8,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/locale.hpp>
+#include "engine_easyocr.hpp"
 #include "engine_tesseract.hpp"
 
 namespace ocr

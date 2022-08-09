@@ -31,21 +31,19 @@ class receipt():
         articles = detections
         return articles
 
-def main(argc, argv):
+def ocr(path, bounding_box):
     try:
-        path_i = argv[1]
-        box_i = [int(c) for c in argv[2].split(",")]
-        r = receipt(path_i)
+        bbox = [int(c) for c in bounding_box.split(",")]
+        r = receipt(path)
         r.init()
-        r.preprocess(box_i)
+        r.preprocess(bbox)
         detections = r.extract()
         articles = r.process(detections)
     except FileNotFoundError:
-        print("Error: Cannot find {}".format(path_i))
+        print("Error: Cannot find {}".format(path))
     except IndexError:
         print("Error: No path to input file and/or box coordinates given")
-    else:
-        print(articles)
+    return " ".join(articles)
 
 if __name__ == "__main__":
-    main(len(sys.argv), sys.argv)
+    ocr("/src/ocr/misc/input/receipt_2.jpg", "77,304,1280,111")
