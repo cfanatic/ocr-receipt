@@ -18,6 +18,7 @@ namespace ocr
     {
         set_path(path);
         PyRun_SimpleString("import sys");
+        PyRun_SimpleString("sys.dont_write_bytecode = True");
         PyRun_SimpleString("sys.path.append(\"..\")");
     }
 
