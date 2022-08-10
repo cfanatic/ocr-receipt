@@ -6,46 +6,39 @@ sys.dont_write_bytecode = True
 import easyocr
 import cv2
 
-class receipt():
+class engine_easyocr():
 
-    def __init__(self, path: str):
+    def __init__(self):
         self._reader = easyocr.Reader(["de", "en"], verbose=False)
-        self._path = path
         self._img_cv = None
 
-    def init(self):
-        self._img_cv = cv2.imread(self._path)
-        pass
-
-    def preprocess(self, box: list):
+    def init(self, path: str, box: str):
+        self._img_cv = cv2.imread(path)
         offset = 20
         x, y, w, h = box[0]+offset, box[1]+offset, box[2]-offset, box[3]-offset
         self._img_cv = self._img_cv[y:y+h, x:x+w]
 
-    def extract(self) -> list:
+    def text(self) -> list:
         return self._reader.readtext(self._img_cv, detail=0)
+
+    def conf(self) -> int:
+        pass
 
     def overlay(self):
         pass
 
-    def process(self, detections: list) -> list:
-        articles = detections
-        return articles
-
 def ocr(path, bounding_box):
-    articles = []
+    article = []
     try:
-        bbox = [int(c) for c in bounding_box.split(",")]
-        r = receipt(path)
-        r.init()
-        r.preprocess(bbox)
-        detections = r.extract()
-        articles = r.process(detections)
+        bounding_box = [int(c) for c in bounding_box.split(",")]
+        e = engine_easyocr()
+        e.init(path, bounding_box)
+        article = e.text()
     except FileNotFoundError:
         print("Error: Cannot find {}".format(path))
     except IndexError:
         print("Error: No path to input file and/or box coordinates given")
-    return " ".join(articles)
+    return " ".join(article)
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
