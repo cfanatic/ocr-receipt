@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import easyocr
-import cv2
 import sys
 sys.dont_write_bytecode = True
+
+import easyocr
+import cv2
 
 class receipt():
 
