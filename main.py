@@ -9,7 +9,7 @@ import cv2
 class receipt():
 
     def __init__(self, path: str):
-        self._reader = easyocr.Reader(["de", "en"])
+        self._reader = easyocr.Reader(["de", "en"], verbose=False)
         self._path = path
         self._img_cv = None
 
