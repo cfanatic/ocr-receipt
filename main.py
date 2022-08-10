@@ -33,6 +33,7 @@ class receipt():
         return articles
 
 def ocr(path, bounding_box):
+    articles = []
     try:
         bbox = [int(c) for c in bounding_box.split(",")]
         r = receipt(path)
@@ -47,4 +48,10 @@ def ocr(path, bounding_box):
     return " ".join(articles)
 
 if __name__ == "__main__":
-    ocr("/src/ocr/misc/input/receipt_2.jpg", "77,304,1280,111")
+    if len(sys.argv) == 3:
+        path = sys.argv[1]
+        bounding_box = sys.argv[2]
+    else:
+        path = "/src/ocr/misc/input/receipt_2.jpg"
+        bounding_box = "77,304,1280,111"
+    ocr(path, bounding_box)
