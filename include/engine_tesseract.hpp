@@ -24,6 +24,7 @@ namespace ocr
 
         void init() override;
         std::string text() override;
+        std::string text(const std::vector<int> &bounding_box) override;
         int conf() override;
         void overlay(const std::vector<std::vector<int>> &bounding_boxes) override;
 

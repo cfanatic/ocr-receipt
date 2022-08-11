@@ -23,6 +23,7 @@ namespace ocr
 
         virtual void init() = 0;
         virtual std::string text() = 0;
+        virtual std::string text(const std::vector<int> &bounding_box) = 0;
         virtual int conf() = 0;
         virtual void overlay(const std::vector<std::vector<int>> &bounding_boxes) = 0;
 

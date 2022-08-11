@@ -35,6 +35,11 @@ namespace ocr
         return std::string("-");
     }
 
+    std::string engine_easyocr::text(const std::vector<int> &bounding_box)
+    {
+        return std::string("-");
+    }
+
     int engine_easyocr::conf()
     {
         return 0;

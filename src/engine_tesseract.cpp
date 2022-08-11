@@ -52,6 +52,12 @@ namespace ocr
         return m_api->GetUTF8Text();
     }
 
+    std::string engine_tesseract::text(const std::vector<int> &bounding_box)
+    {
+        set_bounding_box(bounding_box[0], bounding_box[1], bounding_box[2], bounding_box[3]);
+        return m_api->GetUTF8Text();
+    }
+
     int engine_tesseract::conf()
     {
         return m_api->MeanTextConf();
