@@ -8,16 +8,16 @@ namespace ocr
     {
         set_path(path);
         const std::string &path_abs = get_path();
-        // m_engine = new engine_tesseract();
-        // m_engine->init(path_abs);
-        engine_easyocr engine = engine_easyocr();
-        engine.init(path_abs);
-        engine.text();
+        m_engine = new engine_tesseract(path_abs);
+        m_engine->init();
+        m_engine_e = new engine_easyocr(path_abs);
+        m_engine_e->init();
     }
 
     receipt::~receipt()
     {
         delete m_engine;
+        delete m_engine_e;
     }
 
     void receipt::init()
@@ -75,7 +75,12 @@ namespace ocr
                 }
                 else if (conf > ocr::config.get_threshold() && engine == engine::name::tesseract)
                 {
+                    #ifdef EASYOCR_WRAPPER
+                    std::vector<int> bounding_box{x, y, w, h};
+                    std::string text = m_engine_e->text(bounding_box);
+                    #else
                     std::string text = m_engine->text();
+                    #endif
                     text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
                     receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
                     detections.push_back(detection);

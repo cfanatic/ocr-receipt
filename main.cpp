@@ -34,15 +34,15 @@ int main(int argc, char *argv[])
     ocr::config.load(path_c);
 
     ocr::receipt r(path_i);
-    // r.init();
-    // r.preprocess();
-    // auto detections = r.extract();
-    // auto articles = r.process(detections);
-    // for (const auto &d : detections)
-    //     std::cout << d;
-    // for (const auto &a : articles)
-    //     std::cout << a;
-    // r.overlay(detections);
+    r.init();
+    r.preprocess();
+    auto detections = r.extract();
+    auto articles = r.process(detections);
+    for (const auto &d : detections)
+        std::cout << d;
+    for (const auto &a : articles)
+        std::cout << a;
+    r.overlay(detections);
 
     return 0;
 }

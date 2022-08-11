@@ -98,6 +98,7 @@ namespace ocr
         std::string m_path;
         shop m_shop;
         engine_tesseract *m_engine;
+        engine_easyocr *m_engine_e;
     };
 
 } // namespace ocr
