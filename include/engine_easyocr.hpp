@@ -2,6 +2,7 @@
 #define ENGINE_EASYOCR_HPP
 
 #include <Python.h>
+#include <sstream>
 #include <vector>
 #include "engine.hpp"
 

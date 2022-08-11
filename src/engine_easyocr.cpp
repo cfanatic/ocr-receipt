@@ -24,20 +24,20 @@ namespace ocr
 
     std::string engine_easyocr::text()
     {
-        PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
-        pName = PyUnicode_FromString(std::string("main").c_str());
-        pModule = PyImport_Import(pName);
-        pFunc = PyObject_GetAttrString(pModule, std::string("ocr").c_str());
-        pArgs = PyTuple_Pack(2, PyUnicode_FromString(std::string("/src/ocr/misc/input/receipt_2.jpg").c_str()), PyUnicode_FromString(std::string("77,304,1280,111").c_str()));
-        pValue = PyObject_CallObject(pFunc, pArgs);
-        auto result = _PyUnicode_AsString(pValue);
-        std::cout << result << std::endl;
         return std::string("-");
     }
 
     std::string engine_easyocr::text(const std::vector<int> &bounding_box)
     {
-        return std::string("-");
+        PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
+        std::ostringstream box;
+        box << bounding_box[0] << "," << bounding_box[1] << "," << bounding_box[2] << "," << bounding_box[3];
+        pName = PyUnicode_FromString(std::string("main").c_str());
+        pModule = PyImport_Import(pName);
+        pFunc = PyObject_GetAttrString(pModule, std::string("ocr").c_str());
+        pArgs = PyTuple_Pack(2, PyUnicode_FromString(get_path().c_str()), PyUnicode_FromString(box.str().c_str()));
+        pValue = PyObject_CallObject(pFunc, pArgs);
+        return _PyUnicode_AsString(pValue);
     }
 
     int engine_easyocr::conf()
