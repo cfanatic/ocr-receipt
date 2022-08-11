@@ -3,9 +3,10 @@
 namespace ocr
 {
 
-    engine_easyocr::engine_easyocr()
+    engine_easyocr::engine_easyocr(const std::string &path)
     {
         set_engine(name::easyocr);
+        set_path(path);
         Py_Initialize();
     }
 
@@ -14,9 +15,8 @@ namespace ocr
         Py_Finalize();
     }
 
-    void engine_easyocr::init(const std::string &path)
+    void engine_easyocr::init()
     {
-        set_path(path);
         PyRun_SimpleString("import sys");
         PyRun_SimpleString("sys.dont_write_bytecode = True");
         PyRun_SimpleString("sys.path.append(\"..\")");

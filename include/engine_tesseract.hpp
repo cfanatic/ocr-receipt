@@ -19,10 +19,10 @@ namespace ocr
         typedef BOXA boxx;
         typedef BOX box;
 
-        engine_tesseract();
+        engine_tesseract(const std::string &path);
         ~engine_tesseract();
 
-        void init(const std::string &path) override;
+        void init() override;
         std::string text() override;
         int conf() override;
         void overlay(const std::vector<std::vector<int>> &bounding_boxes) override;

@@ -21,7 +21,7 @@ namespace ocr
         engine() = default;
         virtual ~engine() = default;
 
-        virtual void init(const std::string &path) = 0;
+        virtual void init() = 0;
         virtual std::string text() = 0;
         virtual int conf() = 0;
         virtual void overlay(const std::vector<std::vector<int>> &bounding_boxes) = 0;
