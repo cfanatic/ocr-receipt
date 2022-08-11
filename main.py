@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+from unittest import result
 sys.dont_write_bytecode = True
 
 import easyocr
@@ -10,25 +11,33 @@ class engine_easyocr():
 
     def __init__(self):
         self._reader = easyocr.Reader(["de", "en"], verbose=False)
-        self._img_cv = None
+        self._img = None
+        self._conf = 0.0
 
     def init(self, path: str, box: str):
-        self._img_cv = cv2.imread(path)
+        self._img = cv2.imread(path)
         offset = 20
         x, y, w, h = box[0]+offset, box[1]+offset, box[2]-offset, box[3]-offset
-        self._img_cv = self._img_cv[y:y+h, x:x+w]
+        self._img = self._img[y:y+h, x:x+w]
 
-    def text(self) -> list:
-        return self._reader.readtext(self._img_cv, detail=0)
+    def text(self) -> str:
+        article = []
+        confidence = 0
+        detections = self._reader.readtext(self._img, detail=1)
+        for d in detections:
+            article.append(d[-2])
+            confidence += d[-1]
+        self._conf = confidence / len(detections)
+        return " ".join(article)
 
-    def conf(self) -> int:
-        pass
+    def conf(self) -> float:
+        return self._conf
 
     def overlay(self):
         pass
 
-def ocr(path, bounding_box):
-    article = []
+def ocr(path, bounding_box) -> str:
+    article = ""
     try:
         bounding_box = [int(c) for c in bounding_box.split(",")]
         e = engine_easyocr()
@@ -38,7 +47,7 @@ def ocr(path, bounding_box):
         print("Error: Cannot find {}".format(path))
     except IndexError:
         print("Error: No path to input file and/or box coordinates given")
-    return " ".join(article)
+    return article
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
