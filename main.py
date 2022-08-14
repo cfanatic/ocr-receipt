@@ -48,6 +48,18 @@ def ocr(path, bounding_box) -> str:
         print("Error: No path to input file and/or box coordinates given")
     return article
 
+def ocr_short(path, bounding_box) -> str:
+    reader = easyocr.Reader(["de", "en"], verbose=False)
+    img = cv2.imread(path)
+    box = [int(c) for c in bounding_box.split(",")]
+    x, y, w, h = box[0], box[1], box[2], box[3]
+    img = img[y:y+h, x:x+w]
+    article = []
+    detections = reader.readtext(img, detail=1)
+    for d in detections:
+        article.append(d[-2])
+    return " ".join(article)
+
 if __name__ == "__main__":
     if len(sys.argv) == 3:
         path = sys.argv[1]
@@ -55,5 +67,5 @@ if __name__ == "__main__":
     else:
         path = "/src/ocr/misc/input/receipt_2.jpg"
         bounding_box = "92,319,1265,96"
-    result = ocr(path, bounding_box)
+    result = ocr_short(path, bounding_box)
     print(result)
