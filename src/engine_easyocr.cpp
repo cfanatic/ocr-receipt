@@ -11,8 +11,8 @@ namespace ocr
         std::ofstream wrapper;
         boost::filesystem::path dir(ocr::config.get_easyocr().directory);
         boost::filesystem::path file(ocr::config.get_easyocr().file);
-        boost::filesystem::path path_abs = dir / file;
-        wrapper.open(path_abs.string(), std::ios_base::trunc);
+        boost::filesystem::path wrapper_path = dir / file;
+        wrapper.open(wrapper_path.string(), std::ios_base::trunc);
         wrapper << engine_easyocr::s_wrapper_code;
         wrapper.close();
         Py_Initialize();
@@ -34,9 +34,9 @@ namespace ocr
     std::string engine_easyocr::text()
     {
         PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
-        std::string file = ocr::config.get_easyocr().file;
-        file.erase(file.find(".py"), 3);
-        pName = PyUnicode_FromString(file.c_str());
+        std::string wrapper = ocr::config.get_easyocr().file;
+        wrapper.erase(wrapper.find(".py"), 3);
+        pName = PyUnicode_FromString(wrapper.c_str());
         pModule = PyImport_Import(pName);
         pFunc = PyObject_GetAttrString(pModule, std::string("ocr_short").c_str());
         pArgs = PyTuple_Pack(2, PyUnicode_FromString(get_path().c_str()), PyUnicode_FromString(get_bounding_box().c_str()));
@@ -71,7 +71,6 @@ namespace ocr
     const std::string engine_easyocr::s_wrapper_code =
 R"(
 import sys
-from unittest import result
 sys.dont_write_bytecode = True
 import easyocr
 import cv2

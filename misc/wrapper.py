@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-from unittest import result
 sys.dont_write_bytecode = True
 
 import easyocr
