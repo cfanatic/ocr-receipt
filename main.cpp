@@ -1,4 +1,5 @@
 #include "configuration.hpp"
+#include "engine.hpp"
 #include "receipt.hpp"
 
 namespace po = boost::program_options;
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
     ocr::receipt r(path_i);
     r.init();
     r.preprocess();
-    auto detections = r.extract();
+    auto detections = r.extract(ocr::engine::name::easyocr);
     auto articles = r.process(detections);
     for (const auto &d : detections)
         std::cout << d;
