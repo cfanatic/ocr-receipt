@@ -54,5 +54,6 @@ if __name__ == "__main__":
         bounding_box = sys.argv[2]
     else:
         path = "/src/ocr/misc/input/receipt_2.jpg"
-        bounding_box = "77,304,1280,111"
-    ocr(path, bounding_box)
+        bounding_box = "92,319,1265,96"
+    result = ocr(path, bounding_box)
+    print(result)
