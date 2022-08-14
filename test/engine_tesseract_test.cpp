@@ -1,6 +1,7 @@
 #include <boost/filesystem.hpp>
 #include <gtest/gtest.h>
 #include <iostream>
+#include "configuration.hpp"
 #include "engine_tesseract.hpp"
 
 class engine_tesseract_test : public ::testing::Test
@@ -24,9 +25,9 @@ ocr::engine_tesseract *engine_tesseract_test::m_engine_2 = nullptr;
 
 void engine_tesseract_test::SetUpTestSuite()
 {
+    ocr::config.load("../misc/config.json");
     boost::filesystem::path path_rel_1("../misc/input/receipt_1.jpg"), path_rel_2("../misc/input/receipt_2.jpg");
-    std::string path_abs;
-    path_abs = boost::filesystem::canonical(path_rel_1).string();
+    std::string path_abs = boost::filesystem::canonical(path_rel_1).string();
     m_engine_1 = new ocr::engine_tesseract(path_abs);
     m_engine_1->init();
     path_abs = boost::filesystem::canonical(path_rel_2).string();

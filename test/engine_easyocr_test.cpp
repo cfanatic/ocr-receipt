@@ -27,8 +27,7 @@ void engine_easyocr_test::SetUpTestSuite()
 {
     ocr::config.load("../misc/config.json");
     boost::filesystem::path path_rel_1("../misc/input/receipt_1.jpg"), path_rel_2("../misc/input/receipt_2.jpg");
-    std::string path_abs;
-    path_abs = boost::filesystem::canonical(path_rel_1).string();
+    std::string path_abs = boost::filesystem::canonical(path_rel_1).string();
     m_engine_1 = new ocr::engine_easyocr(path_abs);
     m_engine_1->init();
     path_abs = boost::filesystem::canonical(path_rel_2).string();
