@@ -43,7 +43,7 @@ void engine_easyocr_test::TearDownTestSuite()
 TEST_F(engine_easyocr_test, receipt_1)
 {
     std::vector<std::string> articles_gt = {
-        "HILCHREIS SCHOKO 0, 29 B",
+        "MILCHREIS SCHOKO 0, 29 B",
         "MILCHREIS KIRSCH 0, 29 B",
     };
     m_engine_1->set_bounding_box(100, 116, 2408, 160);
