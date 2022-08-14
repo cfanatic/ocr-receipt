@@ -16,8 +16,7 @@ class engine_easyocr():
 
     def init(self, path: str, box: str):
         self._img = cv2.imread(path)
-        offset = 15
-        x, y, w, h = box[0]+offset, box[1]+offset, box[2]-offset, box[3]-offset
+        x, y, w, h = box[0], box[1], box[2], box[3]
         self._img = self._img[y:y+h, x:x+w]
 
     def text(self) -> str:

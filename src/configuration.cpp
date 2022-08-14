@@ -31,6 +31,13 @@ namespace ocr
         {
             m_filters.push_back(filter.second.data());
         }
+        for (boost::property_tree::ptree::value_type &easyocr : m_config.get_child("easyocr"))
+        {
+            if (easyocr.first == "path")
+                m_easyocr.path = easyocr.second.get_value<std::string>();
+            if (easyocr.first == "offset")
+                m_easyocr.offset = easyocr.second.get_value<int>();
+        }
         m_threshold = m_config.get<int>("detection_conf_thres", 0);
     }
 
@@ -52,6 +59,11 @@ namespace ocr
     std::vector<std::string> configuration::get_filters() const
     {
         return m_filters;
+    }
+
+    configuration::easyocr configuration::get_easyocr() const
+    {
+        return m_easyocr;
     }
 
     int configuration::get_threshold() const

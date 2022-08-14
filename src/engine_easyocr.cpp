@@ -1,3 +1,4 @@
+#include "configuration.hpp"
 #include "engine_easyocr.hpp"
 
 namespace ocr
@@ -44,7 +45,8 @@ namespace ocr
 
     void engine_easyocr::set_bounding_box(int left, int top, int width, int height)
     {
-        std::vector<int> box = {left, top, width, height};
+        int offset = ocr::config.get_easyocr().offset;
+        std::vector<int> box = {left + offset, top + offset, width - offset, height - offset};
         m_bounding_box = box;
     }
 

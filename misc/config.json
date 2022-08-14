@@ -18,5 +18,9 @@
         "einweg",
         "ec-cash"
     ],
+    "easyocr": {
+        "path": "/tmp",
+        "offset": 15
+    },
     "detection_conf_thres": 30
 }

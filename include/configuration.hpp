@@ -14,6 +14,12 @@ namespace ocr
     {
 
     public:
+        struct easyocr
+        {
+            std::string path;
+            int offset;
+        };
+
         static configuration &get_instance();
 
         void load(const std::string &path);
@@ -22,6 +28,7 @@ namespace ocr
         std::vector<std::string> get_shops() const;
         std::map<receipt::shop, int> get_paddings() const;
         std::vector<std::string> get_filters() const;
+        easyocr get_easyocr() const;
         int get_threshold() const;
 
         void set_path(const std::string &path)
@@ -45,6 +52,7 @@ namespace ocr
         std::map<std::string, receipt::shop> m_shops_enum;
         std::map<receipt::shop, int> m_paddings;
         std::vector<std::string> m_filters;
+        easyocr m_easyocr;
         int m_threshold;
     };
 
