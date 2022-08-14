@@ -1,6 +1,7 @@
 #include <boost/filesystem.hpp>
 #include <gtest/gtest.h>
 #include <iostream>
+#include "configuration.hpp"
 #include "engine_easyocr.hpp"
 
 class engine_easyocr_test : public ::testing::Test
@@ -24,6 +25,7 @@ ocr::engine_easyocr *engine_easyocr_test::m_engine_2 = nullptr;
 
 void engine_easyocr_test::SetUpTestSuite()
 {
+    ocr::config.load("../misc/config.json");
     boost::filesystem::path path_rel_1("../misc/input/receipt_1.jpg"), path_rel_2("../misc/input/receipt_2.jpg");
     std::string path_abs;
     path_abs = boost::filesystem::canonical(path_rel_1).string();
