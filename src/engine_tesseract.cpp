@@ -12,7 +12,7 @@ namespace ocr
 
     engine_tesseract::~engine_tesseract()
     {
-        for (auto box : bounding_box_storage)
+        for (auto box : m_bounding_boxes)
         {
             boxDestroy(&box);
         }
@@ -79,7 +79,7 @@ namespace ocr
     engine_tesseract::box *engine_tesseract::get_bounding_box(engine_tesseract::boxx *bounding_boxes, int index)
     {
         engine_tesseract::box *box = boxaGetBox(bounding_boxes, index, L_CLONE);
-        bounding_box_storage.push_back(box);
+        m_bounding_boxes.push_back(box);
         return box;
     }
 
