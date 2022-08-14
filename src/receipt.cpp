@@ -76,8 +76,8 @@ namespace ocr
                 else if (conf > ocr::config.get_threshold() && engine == engine::name::tesseract)
                 {
                     #ifdef EASYOCR_WRAPPER
-                    std::vector<int> bounding_box{x, y, w, h};
-                    std::string text = m_engine_e->text(bounding_box);
+                    m_engine_e->set_bounding_box(x, y, w, h);
+                    std::string text = m_engine_e->text();
                     #else
                     std::string text = m_engine->text();
                     #endif

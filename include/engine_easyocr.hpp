@@ -18,13 +18,14 @@ namespace ocr
 
         void init() override;
         std::string text() override;
-        std::string text(const std::vector<int> &bounding_box) override;
         int conf() override;
         void overlay(const std::vector<std::vector<int>> &bounding_boxes) override;
 
-        void print();
+        void set_bounding_box(int left, int top, int width, int height);
+        std::string get_bounding_box();
 
     private:
+        std::vector<int> m_bounding_box;
     };
 
 } // namespace ocr

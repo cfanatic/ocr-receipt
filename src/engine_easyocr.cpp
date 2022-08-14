@@ -24,18 +24,11 @@ namespace ocr
 
     std::string engine_easyocr::text()
     {
-        return std::string("-");
-    }
-
-    std::string engine_easyocr::text(const std::vector<int> &bounding_box)
-    {
         PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
-        std::ostringstream box;
-        box << bounding_box[0] << "," << bounding_box[1] << "," << bounding_box[2] << "," << bounding_box[3];
         pName = PyUnicode_FromString(std::string("main").c_str());
         pModule = PyImport_Import(pName);
         pFunc = PyObject_GetAttrString(pModule, std::string("ocr").c_str());
-        pArgs = PyTuple_Pack(2, PyUnicode_FromString(get_path().c_str()), PyUnicode_FromString(box.str().c_str()));
+        pArgs = PyTuple_Pack(2, PyUnicode_FromString(get_path().c_str()), PyUnicode_FromString(get_bounding_box().c_str()));
         pValue = PyObject_CallObject(pFunc, pArgs);
         return _PyUnicode_AsString(pValue);
     }
@@ -49,9 +42,18 @@ namespace ocr
     {
     }
 
-    void engine_easyocr::print()
+    void engine_easyocr::set_bounding_box(int left, int top, int width, int height)
     {
-        PyRun_SimpleString("print(\"Hello World from Python!!\")");
+        std::vector<int> box = {left, top, width, height};
+        m_bounding_box = box;
+    }
+
+    std::string engine_easyocr::get_bounding_box()
+    {
+        std::ostringstream box;
+        int left = m_bounding_box[0], top = m_bounding_box[1], width = m_bounding_box[2], height = m_bounding_box[3];
+        box << left << "," << top << "," << width << "," << height;
+        return box.str();
     }
 
 } // namespace ocr
