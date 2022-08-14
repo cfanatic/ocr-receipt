@@ -52,12 +52,6 @@ namespace ocr
         return m_api->GetUTF8Text();
     }
 
-    std::string engine_tesseract::text(const std::vector<int> &bounding_box)
-    {
-        set_bounding_box(bounding_box[0], bounding_box[1], bounding_box[2], bounding_box[3]);
-        return m_api->GetUTF8Text();
-    }
-
     int engine_tesseract::conf()
     {
         return m_api->MeanTextConf();
@@ -77,9 +71,9 @@ namespace ocr
         cv::imwrite(path_out, m_img_cv);
     }
 
-    engine_tesseract::boxx *engine_tesseract::get_bounding_boxes(int padding)
+    void engine_tesseract::set_bounding_box(int left, int top, int width, int height)
     {
-        return m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding, nullptr, nullptr, nullptr);
+        m_api->SetRectangle(left, top, width, height);
     }
 
     engine_tesseract::box *engine_tesseract::get_bounding_box(engine_tesseract::boxx *bounding_boxes, int index)
@@ -89,9 +83,9 @@ namespace ocr
         return box;
     }
 
-    void engine_tesseract::set_bounding_box(int left, int top, int width, int height)
+    engine_tesseract::boxx *engine_tesseract::get_bounding_boxes(int padding)
     {
-        m_api->SetRectangle(left, top, width, height);
+        return m_api->GetComponentImages(tesseract::RIL_TEXTLINE, true, true, padding, nullptr, nullptr, nullptr);
     }
 
 } // namespace ocr
