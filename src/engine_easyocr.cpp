@@ -8,6 +8,13 @@ namespace ocr
     {
         set_engine(name::easyocr);
         set_path(path);
+        std::ofstream wrapper;
+        boost::filesystem::path dir(ocr::config.get_easyocr().directory);
+        boost::filesystem::path file(ocr::config.get_easyocr().file);
+        boost::filesystem::path path_abs = dir / file;
+        wrapper.open(path_abs.string(), std::ios_base::trunc);
+        wrapper << engine_easyocr::s_wrapper_code;
+        wrapper.close();
         Py_Initialize();
     }
 
@@ -18,17 +25,20 @@ namespace ocr
 
     void engine_easyocr::init()
     {
+        boost::format sys_path = boost::format("sys.path.append('%s')") % ocr::config.get_easyocr().directory;
         PyRun_SimpleString("import sys");
         PyRun_SimpleString("sys.dont_write_bytecode = True");
-        PyRun_SimpleString("sys.path.append(\"..\")");
+        PyRun_SimpleString(sys_path.str().c_str());
     }
 
     std::string engine_easyocr::text()
     {
         PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
-        pName = PyUnicode_FromString(std::string("main").c_str());
+        std::string file = ocr::config.get_easyocr().file;
+        file.erase(file.find(".py"), 3);
+        pName = PyUnicode_FromString(file.c_str());
         pModule = PyImport_Import(pName);
-        pFunc = PyObject_GetAttrString(pModule, std::string("ocr").c_str());
+        pFunc = PyObject_GetAttrString(pModule, std::string("ocr_short").c_str());
         pArgs = PyTuple_Pack(2, PyUnicode_FromString(get_path().c_str()), PyUnicode_FromString(get_bounding_box().c_str()));
         pValue = PyObject_CallObject(pFunc, pArgs);
         return _PyUnicode_AsString(pValue);
@@ -57,5 +67,26 @@ namespace ocr
         box << left << "," << top << "," << width << "," << height;
         return box.str();
     }
+
+    const std::string engine_easyocr::s_wrapper_code =
+R"(
+import sys
+from unittest import result
+sys.dont_write_bytecode = True
+import easyocr
+import cv2
+
+def ocr_short(path, bounding_box) -> str:
+    reader = easyocr.Reader(["de", "en"], verbose=False)
+    img = cv2.imread(path)
+    box = [int(c) for c in bounding_box.split(",")]
+    x, y, w, h = box[0], box[1], box[2], box[3]
+    img = img[y:y+h, x:x+w]
+    article = []
+    detections = reader.readtext(img, detail=1)
+    for d in detections:
+        article.append(d[-2])
+    return " ".join(article)
+)";
 
 } // namespace ocr

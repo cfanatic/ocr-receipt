@@ -16,7 +16,8 @@ namespace ocr
     public:
         struct easyocr
         {
-            std::string path;
+            std::string directory;
+            std::string file;
             int offset;
         };
 

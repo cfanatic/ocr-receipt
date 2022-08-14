@@ -2,8 +2,11 @@
 #define ENGINE_EASYOCR_HPP
 
 #include <Python.h>
+#include <fstream>
 #include <sstream>
 #include <vector>
+#include <boost/filesystem.hpp>
+#include <boost/format.hpp>
 #include "engine.hpp"
 
 namespace ocr
@@ -26,6 +29,7 @@ namespace ocr
 
     private:
         std::vector<int> m_bounding_box;
+        static const std::string s_wrapper_code;
     };
 
 } // namespace ocr

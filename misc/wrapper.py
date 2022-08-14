@@ -44,7 +44,7 @@ def ocr(path, bounding_box) -> str:
         article = e.text()
     except FileNotFoundError:
         print("Error: Cannot find {}".format(path))
-    except IndexError:
+    except (IndexError, TypeError, ValueError):
         print("Error: No path to input file and/or box coordinates given")
     return article
 
@@ -67,5 +67,5 @@ if __name__ == "__main__":
     else:
         path = "/src/ocr/misc/input/receipt_2.jpg"
         bounding_box = "92,319,1265,96"
-    result = ocr_short(path, bounding_box)
+    result = ocr(path, bounding_box)
     print(result)

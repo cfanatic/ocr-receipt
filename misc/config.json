@@ -19,7 +19,8 @@
         "ec-cash"
     ],
     "easyocr": {
-        "path": "/tmp",
+        "directory": "/tmp",
+        "file": "wrapper.py",
         "offset": 15
     },
     "detection_conf_thres": 30

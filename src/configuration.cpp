@@ -33,8 +33,10 @@ namespace ocr
         }
         for (boost::property_tree::ptree::value_type &easyocr : m_config.get_child("easyocr"))
         {
-            if (easyocr.first == "path")
-                m_easyocr.path = easyocr.second.get_value<std::string>();
+            if (easyocr.first == "directory")
+                m_easyocr.directory = easyocr.second.get_value<std::string>();
+            if (easyocr.first == "file")
+                m_easyocr.file = easyocr.second.get_value<std::string>();
             if (easyocr.first == "offset")
                 m_easyocr.offset = easyocr.second.get_value<int>();
         }
