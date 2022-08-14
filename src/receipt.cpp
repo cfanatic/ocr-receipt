@@ -69,18 +69,21 @@ namespace ocr
                 int x = box->x, y = box->y, w = box->w, h = box->h;
                 m_engine->set_bounding_box(x, y, w, h);
                 int conf = m_engine->conf();
-                if (conf > ocr::config.get_threshold() && engine == engine::name::easyocr)
+                if (conf < ocr::config.get_threshold())
                 {
-                    // todo: call wrapper
+                    std::cerr << "Error: Detection does not meet confidence score" << std::endl;
                 }
-                else if (conf > ocr::config.get_threshold() && engine == engine::name::tesseract)
+                else if (engine == engine::name::easyocr)
                 {
-                    #ifdef EASYOCR_WRAPPER
                     m_engine_e->set_bounding_box(x, y, w, h);
                     std::string text = m_engine_e->text();
-                    #else
+                    text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
+                    receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
+                    detections.push_back(detection);
+                }
+                else if (engine == engine::name::tesseract)
+                {
                     std::string text = m_engine->text();
-                    #endif
                     text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
                     receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
                     detections.push_back(detection);
