@@ -44,7 +44,7 @@ namespace ocr
                 int value = item.second.get_value<int>();
                 m_paddings[enum_conversion(shop)] = value;
             }
-            if (item.first == "conf_thres")
+            if (item.first == "conf_threshold")
                 m_threshold = item.second.get_value<int>();
         }
     }

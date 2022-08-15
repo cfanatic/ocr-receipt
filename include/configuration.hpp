@@ -19,6 +19,11 @@ namespace ocr
             std::string directory;
             std::string file;
             int offset;
+
+            inline bool operator==(const easyocr &e) const
+            {
+                return e.directory == directory && e.file == file && e.offset == offset;
+            }
         };
 
         static configuration &get_instance();
