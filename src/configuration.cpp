@@ -14,33 +14,39 @@ namespace ocr
     {
         set_path(path);
         boost::property_tree::read_json(get_path(), m_config);
-        for (boost::property_tree::ptree::value_type &shop : m_config.get_child("shops"))
+        for (const boost::property_tree::ptree::value_type &item : m_config.get_child("shops"))
         {
             static int i;
-            m_shops.push_back(shop.second.data());
-            m_shops_enum[shop.second.data()] = static_cast<ocr::receipt::shop>(i);
+            m_shops.push_back(item.second.data());
+            m_shops_enum[item.second.data()] = static_cast<ocr::receipt::shop>(i);
             i++;
         }
-        for (boost::property_tree::ptree::value_type &padding : m_config.get_child("paddings"))
-        {
-            std::string shop = padding.first;
-            int value = padding.second.get_value<int>();
-            m_paddings[enum_conversion(shop)] = value;
-        }
-        for (boost::property_tree::ptree::value_type &filter : m_config.get_child("filters"))
+        for (const boost::property_tree::ptree::value_type &filter : m_config.get_child("filters"))
         {
             m_filters.push_back(filter.second.data());
         }
-        for (boost::property_tree::ptree::value_type &easyocr : m_config.get_child("easyocr"))
+        for (const boost::property_tree::ptree::value_type &item : m_config.get_child("engines.easyocr"))
         {
-            if (easyocr.first == "directory")
-                m_easyocr.directory = easyocr.second.get_value<std::string>();
-            if (easyocr.first == "file")
-                m_easyocr.file = easyocr.second.get_value<std::string>();
-            if (easyocr.first == "offset")
-                m_easyocr.offset = easyocr.second.get_value<int>();
+            if (item.first == "directory")
+                m_easyocr.directory = item.second.get_value<std::string>();
+            if (item.first == "file")
+                m_easyocr.file = item.second.get_value<std::string>();
+            if (item.first == "offset")
+                m_easyocr.offset = item.second.get_value<int>();
         }
-        m_threshold = m_config.get<int>("detection_conf_thres", 0);
+        for (const boost::property_tree::ptree::value_type &item : m_config.get_child("engines.tesseract"))
+        {
+            const std::string &key = item.first;
+            const boost::property_tree::ptree &tree = item.second;
+            for (auto &item : tree)
+            {
+                std::string shop = item.first;
+                int value = item.second.get_value<int>();
+                m_paddings[enum_conversion(shop)] = value;
+            }
+            if (item.first == "conf_thres")
+                m_threshold = item.second.get_value<int>();
+        }
     }
 
     receipt::shop configuration::enum_conversion(std::string shop)

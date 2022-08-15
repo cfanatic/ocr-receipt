@@ -5,12 +5,6 @@
         "aldi",
         "unknown"
     ],
-    "paddings": {
-        "edeka": 6,
-        "rewe": 20,
-        "aldi": 18,
-        "unknown": 20
-    },
     "filters": [
         "summe",
         "pfand",
@@ -18,10 +12,20 @@
         "einweg",
         "ec-cash"
     ],
-    "easyocr": {
-        "directory": "/tmp",
-        "file": "wrapper.py",
-        "offset": 15
-    },
-    "detection_conf_thres": 30
+    "engines": {
+        "easyocr": {
+            "directory": "/tmp",
+            "file": "wrapper.py",
+            "offset": 15
+        },
+        "tesseract": {
+            "paddings": {
+                "edeka": 6,
+                "rewe": 20,
+                "aldi": 18,
+                "unknown": 20
+            },
+            "conf_thres": 30
+        }
+    }
 }
