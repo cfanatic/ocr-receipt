@@ -21,9 +21,9 @@ namespace ocr
             m_shops_enum[item.second.data()] = static_cast<ocr::receipt::shop>(i);
             i++;
         }
-        for (const boost::property_tree::ptree::value_type &filter : m_config.get_child("filters"))
+        for (const boost::property_tree::ptree::value_type &item : m_config.get_child("filters"))
         {
-            m_filters.push_back(filter.second.data());
+            m_filters.push_back(item.second.data());
         }
         for (const boost::property_tree::ptree::value_type &item : m_config.get_child("engines.easyocr"))
         {

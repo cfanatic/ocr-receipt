@@ -38,7 +38,7 @@ namespace ocr
         wrapper.erase(wrapper.find(".py"), 3);
         pName = PyUnicode_FromString(wrapper.c_str());
         pModule = PyImport_Import(pName);
-        pFunc = PyObject_GetAttrString(pModule, std::string("ocr_short").c_str());
+        pFunc = PyObject_GetAttrString(pModule, "ocr_short");
         pArgs = PyTuple_Pack(2, PyUnicode_FromString(get_path().c_str()), PyUnicode_FromString(get_bounding_box().c_str()));
         pValue = PyObject_CallObject(pFunc, pArgs);
         return _PyUnicode_AsString(pValue);

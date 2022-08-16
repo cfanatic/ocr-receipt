@@ -77,7 +77,6 @@ namespace ocr
                 {
                     m_engine_e->set_bounding_box(x, y, w, h);
                     std::string text = m_engine_e->text();
-                    text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
                     receipt::detection detection = {static_cast<int>(detections.size()), x, y, w, h, conf, text};
                     detections.push_back(detection);
                 }
