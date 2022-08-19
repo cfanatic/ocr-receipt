@@ -11,3 +11,6 @@ tesseract -l deu --tessdata-dir /usr/local/share/tessdata /src/ocr/misc/input/re
 
 # Instructions to perform OCR outside of the container
 docker exec -it ocr-receipt ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_1.jpg
+
+# Instructions to pipe results into a file on the host machine
+docker exec -t ocr-receipt ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg > results.txt
