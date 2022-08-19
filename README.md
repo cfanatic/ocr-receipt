@@ -10,18 +10,17 @@ struct article
     std::string name;
     float price;
 };
-std::vector<article> results;
+std::vector<article> articles;
 ```
 
-It is based on a dual-engine approach for character recognition: [Tesseract](https://github.com/tesseract-ocr/tesseract) is used to detect bounding boxes on receipts as shown below, and then [EasyOCR](https://github.com/JaidedAI/EasyOCR) is used to extract the text within these bounding boxes.
+Character recognition is based on a two-step process: [Tesseract](https://github.com/tesseract-ocr/tesseract) is used to detect bounding boxes on receipts as shown below first, and then [EasyOCR](https://github.com/JaidedAI/EasyOCR) is used to extract the text within these bounding boxes.
 
-Reason for this design: Tesseract performs better with regard to coherent line-by-line detections, whereas EasyOCR is able to extract uncommon words with higher accuracy.
+Tesseract performs better in terms of coherent line-by-line detections, whereas EasyOCR is able to extract uncommon words with higher accuracy.
 
 ![Detection Results](https://media.githubusercontent.com/media/cfanatic/ocr-receipt/master/misc/output/receipt_2_overlay.jpg)
 
 ```text
 $ ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg
-
 Shop: unknown
 Box[0]: x=1034, y=53, w=238, h=89, conf: 84, text: EUR
 Box[1]: x=89, y=107, w=1253, h=105, conf: 71, text: 814373 Konfitüre Extra 1,29 A
@@ -34,6 +33,30 @@ Article=Erdbeeren 500g, Price=0.99
 Article=Spargel Grün 400g, Price=2.99
 ```
 
+```text
+$ ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg --json
+{
+    "Articles": [
+        {
+            "Name": "Konfitüre Extra",
+            "Price": "1.29"
+        },
+        {
+            "Name": "Feine Kleinkuchen",
+            "Price": "1.79"
+        },
+        {
+            "Name": "Erdbeeren 500g",
+            "Price": "0.99"
+        },
+        {
+            "Name": "Spargel Grün 400g",
+            "Price": "2.99"
+        }
+    ]
+}
+```
+
 ## Requirements
 
 The project itself is automatically built inside a Docker container based on following dependencies:
@@ -43,7 +66,6 @@ The project itself is automatically built inside a Docker container based on fol
 - EasyOCR 1.5.0
 - Boost 1.74.0
 - OpenCV 4.5.4
-- Python 3.10.4
 
 ## Setup
 
@@ -75,8 +97,6 @@ Test project /src/ocr/build
       Start  2: configuration_test.filters
  2/13 Test  #2: configuration_test.filters ...............   Passed    0.16 sec
  ...
-      Start 11: receipt_test.receipt_2
-11/13 Test #11: receipt_test.receipt_2 ...................   Passed    1.99 sec
       Start 12: receipt_test.receipt_3
 12/13 Test #12: receipt_test.receipt_3 ...................   Passed    2.36 sec
       Start 13: receipt_test.receipt_4
@@ -95,4 +115,6 @@ Perform character recognition on [one of the input images](https://github.com/cf
 docker exec -it ocr-receipt ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg
 ```
 
-You should be getting the results as shown above.
+You should be getting the results from above.
+
+Add the `--json` switch if you want to serialize the results for further processing.
