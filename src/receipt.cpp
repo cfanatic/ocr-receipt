@@ -45,7 +45,6 @@ namespace ocr
         {
             set_shop(receipt::shop::unknown);
         }
-        std::cout << "Shop: " << get_shop() << std::endl;
     }
 
     std::vector<receipt::detection> receipt::extract(engine::name engine, iterator level)

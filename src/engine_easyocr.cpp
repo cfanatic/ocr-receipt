@@ -62,7 +62,7 @@ namespace ocr
 
     std::string engine_easyocr::get_bounding_box()
     {
-        std::ostringstream box;
+        std::stringstream box;
         int left = m_bounding_box[0], top = m_bounding_box[1], width = m_bounding_box[2], height = m_bounding_box[3];
         box << left << "," << top << "," << width << "," << height;
         return box.str();

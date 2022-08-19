@@ -45,7 +45,7 @@ namespace ocr
 
         struct article
         {
-            bool operator==(const article &ra) const
+            inline bool operator==(const article &ra) const
             {
                 return this->name == ra.name && this->price == ra.price;
             }
