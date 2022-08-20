@@ -8,7 +8,10 @@ namespace pt = boost::property_tree;
 int main(int argc, char *argv[])
 {
     po::options_description od("Options");
-    od.add_options()("config,c", po::value<std::string>(), "set configuration file")("image,i", po::value<std::string>(), "set input image")("json,j", "set output as JSON");
+    od.add_options()
+    ("config,c", po::value<std::string>(), "set configuration file")
+    ("image,i", po::value<std::string>(), "set input image")
+    ("json,j", "set output as JSON");
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, od), vm);
     po::notify(vm);
