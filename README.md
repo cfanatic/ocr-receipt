@@ -36,6 +36,7 @@ Article=Spargel Grün 400g, Price=2.99
 ```text
 $ ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg --json
 {
+    "Shop": "unknown",
     "Articles": [
         {
             "Name": "Konfitüre Extra",

@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
             item.put("Price", boost::format("%.2f") % a.price);
             arr.push_back(std::make_pair("", item));
         }
+        root.put("Shop", r.get_shop());
         root.put_child("Articles", arr);
         pt::write_json(results, root);
         std::cout << results.str() << std::endl;
