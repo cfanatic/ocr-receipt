@@ -60,15 +60,78 @@ $ ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg --json
 
 ## Requirements
 
-The project itself is automatically built inside a Docker container based on following dependencies:
+### General 
 
-- Ubuntu 22.04
-- Tesseract 5.1.0
+- OpenCV 4.5.4
 - EasyOCR 1.5.0
 - Boost 1.74.0
-- OpenCV 4.5.4
+
+### Dependencies for Building with Docker (Optional)
+The project itself is automatically built inside a Docker container based on following dependencies:
+
+- Linux Based Distribution
+- Tesseract 5.1.0
+- Leptonica 1.82.0
+- Docker 
+
+### Dependencies when opting for Build without Docker (Optional)
+
+- Curl
+- Cmake 3.2.0
+- CXX Compiler
+- Git
+- Libarchive
+- Libpng
+- Libjpeg
+- Libgif
+- Libtiff
+- zlib
+- libwebp (webp)
+- libjp2k (openjpeg or JPEG 2000)
+
+Leptonica and Tesseract are not needed in this case since they will be fetched
+and compiled statically by the build script.
 
 ## Setup
+
+### Without Docker
+After cloning the repository go into the main project root and run the following :
+
+#### Configure
+```shell
+mkdir build \
+cd build 
+```
+
+```shell
+cmake ..
+```
+this will trigger a docker-independent build only if Tesseract and Leptonica are not available
+to force a static linkage of both libraries anyways, run the following instead : 
+
+```shell
+cmake -DDOCKERLESS_BUILD ..
+```
+The build script will fetch needed leptonica and tesseract libraries and link statically
+
+#### Build 
+
+```shell
+cmake --build --parallel ${nproc} ..
+```
+The binaries can then be found under the "build" folder
+
+#### Run Unit Tests
+
+```shell
+ctest
+```
+#### set TESSDATA_PREFIX
+
+The build script automatically fetches TESSDATA learningdata and provides information on where it is
+after the configuration step . Please follow this for a proper execution of the software
+
+### With Docker
 
 Build the image:
 

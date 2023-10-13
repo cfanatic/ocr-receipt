@@ -1,5 +1,11 @@
+##### IDES  #######
 .vscode/
+.idea/
+##### BUILD ARTIFACTS #####
 build/
+/local_root/**/*
+/External/**/*
+#### RESOURCES #####
 misc/images
 misc/input/*
 !misc/input/receipt_1.jpg
