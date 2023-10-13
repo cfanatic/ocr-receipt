@@ -252,6 +252,3 @@ ExternalProject_Add(tesseract-traineddata
 ##########################################################################
 set(Tesseract_STATICLIB_TARGET tesseract)
 set(Leptonica_STATICLIB_TARGET leptonica)
-##########################################################################
-#                 Set TESSDATA_PREFIX                                    #
-##########################################################################

@@ -117,7 +117,7 @@ The build script will fetch needed leptonica and tesseract libraries and link st
 #### Build 
 
 ```shell
-cmake --build --parallel ${nproc} ..
+cmake --build . --parallel ${nproc}
 ```
 The binaries can then be found under the "build" folder
 
