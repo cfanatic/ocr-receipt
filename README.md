@@ -175,6 +175,17 @@ Total Test time (real) =  23.33 sec
 
 Perform character recognition on [one of the input images](https://github.com/cfanatic/ocr-receipt/blob/master/misc/input/receipt_2.jpg) from the `misc/input/` folder:
 
+### Without Docker
+
+Inside the build folder under the projects root . run the following
+
+```shell
+./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg
+```
+
+
+### With Docker
+
 ```text
 docker exec -it ocr-receipt ./ocr-receipt -c ../misc/config.json -i ../misc/input/receipt_2.jpg
 ```
